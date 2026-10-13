@@ -46,3 +46,5 @@ scratch/
 # Vercel / Node
 node_modules/
 .vercel/
+
+.vercel
