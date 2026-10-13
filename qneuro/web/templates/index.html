@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QNeuro Forge &mdash; Benchmark Ledger</title>
+  <link rel="stylesheet" href="/static/fonts.css">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  {# STATE: Tampered band across the top #}
+  {% if tampered_override or (data and (not data.verified or not data.audit_valid)) %}
+  <aside class="tampered-banner" role="alert">
+    {% if tampered_override %}
+      TAMPER DETECTED: {{ tampered_override }}
+    {% elif not data.audit_valid %}
+      TAMPER DETECTED: Audit link failure at entry {{ data.audit_failed_idx }} &mdash; {{ data.audit_err }}
+    {% elif not data.verified %}
+      TAMPER DETECTED: ML-DSA-65 signature mismatch on run artifact {{ data.filename }}
+    {% endif %}
+  </aside>
+  {% endif %}
+
+  {# STATE: Running #}
+  {% if state == "running" %}
+  <div class="running-banner">
+    Agent executing: {{ running_step }} &mdash; {{ running_action }}
+  </div>
+  {% endif %}
+
+  {# STATE: Error #}
+  {% if state == "error" %}
+  <div class="error-banner">
+    <strong>Benchmark failure:</strong> {{ error_stage }}<br>
+    {{ error_message }}
+    <div class="retry-cmd">Retry command: <code>{{ retry_cmd }}</code></div>
+  </div>
+  {% endif %}
+
+  {# STATE: Empty #}
+  {% if state == "empty" or not data %}
+  <div class="header-strip">
+    <div class="header-wordmark">QNeuro Forge &mdash; <em>Instrument Ledger</em></div>
+    <div class="header-meta">STATUS: UNINITIALISED</div>
+  </div>
+  <section class="empty-state">
+    <h2>No benchmark runs recorded in ledger.</h2>
+    <p>Execute the experiment agent to generate a synthetic neurodevelopmental cohort, evaluate quantum-kernel against classical baselines, and sign results with ML-DSA-65:</p>
+    <code>python -m qneuro.agent</code>
+  </section>
+  {% else %}
+
+  {# 1. Header Strip #}
+  <header class="header-strip">
+    <div class="header-wordmark">
+      QNeuro Forge &mdash; <em>Instrument Ledger</em>
+    </div>
+    <div class="header-meta">
+      RUN: <span>{{ data.run_id }}</span> &middot;
+      <span>{{ data.timestamp_str }}</span> &middot;
+      <span class="tag-synthetic">{{ data.dataset_source_label }}</span>
+    </div>
+  </header>
+
+  {# 2. Verdict Sentence #}
+  <section class="verdict-region">
+    <div class="verdict-lead">Arbitration Verdict (qneuro/guard.py)</div>
+    <p class="verdict-sentence">
+      {{ data.verdict_claim }}
+    </p>
+    <p class="verdict-context">
+      {{ data.verdict_note }}
+    </p>
+  </section>
+
+  {# 3. Two columns below: 5/12 Run Ledger Table, 7/12 Horizontal Interval Plot #}
+  <section class="ledger-grid">
+    <div class="ledger-col-table">
+      <div class="section-label">Ledger Summary (5-Fold Stratified CV)</div>
+      <div class="ledger-table-wrap">
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th scope="col">Model</th>
+              <th scope="col" class="num">AUROC</th>
+              <th scope="col" class="num">95% CI</th>
+              <th scope="col" class="num">F1</th>
+              <th scope="col" class="num">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in data.run.classical_results %}
+            {% set is_best = (r.model_name == data.verdict.best_classical_model) %}
+            <tr class="{{ 'row-best-classical' if is_best else 'row-other' }}">
+              <td class="model-cell">{{ r.model_name }}</td>
+              <td class="num">{{ "%.4f"|format(r.roc_auc) if r.roc_auc is not none else "—" }}</td>
+              <td class="num">
+                {% if r.roc_auc_ci_lower is not none and r.roc_auc_ci_upper is not none %}
+                  [{{ "%.3f"|format(r.roc_auc_ci_lower) }}, {{ "%.3f"|format(r.roc_auc_ci_upper) }}]
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td class="num">{{ "%.4f"|format(r.f1_score) }}</td>
+              <td class="num">{{ "%.3fs"|format(r.train_time_seconds) }}</td>
+            </tr>
+            {% endfor %}
+
+            {% for r in data.run.quantum_results %}
+            <tr class="row-quantum">
+              <td class="model-cell">{{ r.model_name }}</td>
+              <td class="num">{{ "%.4f"|format(r.roc_auc) if r.roc_auc is not none else "—" }}</td>
+              <td class="num">
+                {% if r.roc_auc_ci_lower is not none and r.roc_auc_ci_upper is not none %}
+                  [{{ "%.3f"|format(r.roc_auc_ci_lower) }}, {{ "%.3f"|format(r.roc_auc_ci_upper) }}]
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td class="num">{{ "%.4f"|format(r.f1_score) }}</td>
+              <td class="num">{{ "%.3fs"|format(r.train_time_seconds) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ledger-col-plot">
+      <div class="section-label">Empirical AUROC Distributions</div>
+      <div class="plot-container">
+        {{ data.svg_plot | safe }}
+      </div>
+    </div>
+  </section>
+
+  {# 4. Agent Log (Ruled vertical list) #}
+  <section class="agent-log-region">
+    <div class="section-label">Agent Execution Trace (Sequestered Gateway Trace)</div>
+    <ol class="agent-log-list">
+      {% if data.agent_steps %}
+        {% for s in data.agent_steps %}
+        <li class="agent-log-item">
+          <span class="log-step">{{ "%02d"|format(s.step) }}</span>
+          <span class="log-action">{{ s.action }}</span>
+          <span class="log-reason">{{ s.reason }}</span>
+        </li>
+        {% endfor %}
+      {% else %}
+        <li class="agent-log-item">
+          <span class="log-step">--</span>
+          <span class="log-action">NO_STEPS_RECORDED</span>
+          <span class="log-reason">No discrete agent execution steps were persisted in this run artifact.</span>
+        </li>
+      {% endif %}
+    </ol>
+  </section>
+
+  {# 5. Provenance #}
+  <section class="provenance-region">
+    <div>
+      {% if data.verified and data.audit_valid and not tampered_override %}
+      <div class="stamp stamp-verified">
+        SIGNATURE VALID
+        <span class="stamp-sub">FIPS 204 NOTARISED</span>
+      </div>
+      {% else %}
+      <div class="stamp stamp-tampered">
+        TAMPERED
+        <span class="stamp-sub">INTEGRITY BREACH</span>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="provenance-details">
+      <div>Algorithm: <strong>{{ data.sig_algo }}</strong></div>
+      <div>Public Key: <strong>{{ data.pk_fingerprint }}</strong></div>
+      <div>Audit Head: <strong>{{ data.audit_head[:24] }}...</strong></div>
+      <div>Audit Chain: <strong>{{ data.audit_length }} entries linked</strong></div>
+      <div>Cohort: <strong>{{ data.cohort_desc }}</strong></div>
+      <div>Artifact: <strong>runs/{{ data.filename }}</strong></div>
+    </div>
+
+    <div class="provenance-verify-box">
+      <form action="/verify" method="post" enctype="multipart/form-data">
+        <label for="run_file">Verify a file</label>
+        <input type="file" id="run_file" name="run_file" accept=".json" required>
+        <button type="submit" class="verify-button">Verify Artifact</button>
+      </form>
+    </div>
+  </section>
+
+  {% endif %}
+
+</body>
+</html>

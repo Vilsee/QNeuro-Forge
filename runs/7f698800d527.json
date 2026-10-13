@@ -1,0 +1,254 @@
+{
+  "run": {
+    "run_id": "7f698800d527",
+    "timestamp": "2026-10-13T10:17:40.028577Z",
+    "dataset_name": "synth_neurodev",
+    "dataset_source": "SYNTHETIC",
+    "n_samples": 80,
+    "n_features": 8,
+    "classical_results": [
+      {
+        "model_name": "LogisticRegression",
+        "accuracy": 0.5,
+        "f1_score": 0.4885994397759104,
+        "precision": 0.5087301587301587,
+        "recall": 0.475,
+        "roc_auc": 0.596875,
+        "roc_auc_ci_lower": 0.45737654855555765,
+        "roc_auc_ci_upper": 0.7363734514444424,
+        "roc_auc_folds": [
+          0.609375,
+          0.6875,
+          0.515625,
+          0.71875,
+          0.453125
+        ],
+        "is_quantum": false,
+        "train_time_seconds": 0.004524760000640527,
+        "params": {
+          "C": "1.0",
+          "class_weight": "None",
+          "dual": "False",
+          "fit_intercept": "True",
+          "intercept_scaling": "1",
+          "l1_ratio": "0.0",
+          "max_iter": "1000",
+          "n_jobs": "None",
+          "penalty": "deprecated",
+          "random_state": "42",
+          "solver": "lbfgs",
+          "tol": "0.0001",
+          "verbose": "0",
+          "warm_start": "False"
+        }
+      },
+      {
+        "model_name": "RandomForest",
+        "accuracy": 0.5625,
+        "f1_score": 0.5265761689291102,
+        "precision": 0.5765079365079364,
+        "recall": 0.5,
+        "roc_auc": 0.584375,
+        "roc_auc_ci_lower": 0.45819390301541085,
+        "roc_auc_ci_upper": 0.7105560969845891,
+        "roc_auc_folds": [
+          0.640625,
+          0.484375,
+          0.484375,
+          0.71875,
+          0.59375
+        ],
+        "is_quantum": false,
+        "train_time_seconds": 0.07996097999275661,
+        "params": {
+          "bootstrap": "True",
+          "ccp_alpha": "0.0",
+          "class_weight": "None",
+          "criterion": "gini",
+          "max_depth": "4",
+          "max_features": "sqrt",
+          "max_leaf_nodes": "None",
+          "max_samples": "None",
+          "min_impurity_decrease": "0.0",
+          "min_samples_leaf": "1",
+          "min_samples_split": "2",
+          "min_weight_fraction_leaf": "0.0",
+          "monotonic_cst": "None",
+          "n_estimators": "60",
+          "n_jobs": "None",
+          "oob_score": "False",
+          "random_state": "42",
+          "verbose": "0",
+          "warm_start": "False"
+        }
+      },
+      {
+        "model_name": "GradientBoosting",
+        "accuracy": 0.5125,
+        "f1_score": 0.48195783576588525,
+        "precision": 0.5163059163059163,
+        "recall": 0.475,
+        "roc_auc": 0.4828125,
+        "roc_auc_ci_lower": 0.3215973110944478,
+        "roc_auc_ci_upper": 0.6440276889055522,
+        "roc_auc_folds": [
+          0.40625,
+          0.484375,
+          0.4453125,
+          0.703125,
+          0.375
+        ],
+        "is_quantum": false,
+        "train_time_seconds": 0.03901944000390358,
+        "params": {
+          "ccp_alpha": "0.0",
+          "criterion": "deprecated",
+          "init": "None",
+          "learning_rate": "0.1",
+          "loss": "log_loss",
+          "max_depth": "3",
+          "max_features": "None",
+          "max_leaf_nodes": "None",
+          "min_impurity_decrease": "0.0",
+          "min_samples_leaf": "1",
+          "min_samples_split": "2",
+          "min_weight_fraction_leaf": "0.0",
+          "n_estimators": "40",
+          "n_iter_no_change": "None",
+          "random_state": "42",
+          "subsample": "1.0",
+          "tol": "0.0001",
+          "validation_fraction": "0.1",
+          "verbose": "0",
+          "warm_start": "False"
+        }
+      },
+      {
+        "model_name": "SVM-RBF",
+        "accuracy": 0.4875,
+        "f1_score": 0.4507264957264958,
+        "precision": 0.5007142857142857,
+        "recall": 0.425,
+        "roc_auc": 0.4,
+        "roc_auc_ci_lower": 0.32197275739486864,
+        "roc_auc_ci_upper": 0.4780272426051314,
+        "roc_auc_folds": [
+          0.5078125,
+          0.390625,
+          0.375,
+          0.3828125,
+          0.34375
+        ],
+        "is_quantum": false,
+        "train_time_seconds": 0.003447000001324341,
+        "params": {
+          "C": "1.0",
+          "break_ties": "False",
+          "cache_size": "200",
+          "class_weight": "None",
+          "coef0": "0.0",
+          "decision_function_shape": "ovr",
+          "degree": "3",
+          "gamma": "scale",
+          "kernel": "rbf",
+          "max_iter": "-1",
+          "probability": "True",
+          "random_state": "42",
+          "shrinking": "True",
+          "tol": "0.001",
+          "verbose": "False"
+        }
+      }
+    ],
+    "quantum_results": [
+      {
+        "model_name": "QuantumKernel-ZZFeatureMap",
+        "accuracy": 0.5375,
+        "f1_score": 0.5165406162464986,
+        "precision": 0.5416666666666667,
+        "recall": 0.525,
+        "roc_auc": 0.39375,
+        "roc_auc_ci_lower": 0.21258163810356648,
+        "roc_auc_ci_upper": 0.5749183618964335,
+        "roc_auc_folds": [
+          0.453125,
+          0.609375,
+          0.375,
+          0.296875,
+          0.234375
+        ],
+        "is_quantum": true,
+        "train_time_seconds": 0.03104288000613451,
+        "params": {
+          "kernel": "ZZ-feature-map-fidelity",
+          "circuit_ansatz": "2-local-zz"
+        }
+      }
+    ],
+    "agent_steps": [
+      {
+        "step": 1,
+        "action": "INITIALIZE_GATEWAY",
+        "reason": "Establishing data gateway boundary so the agent never touches raw clinical records."
+      },
+      {
+        "step": 2,
+        "action": "SYNTHESIZE_COHORT",
+        "reason": "Generating balanced synthetic cohort of neurodevelopmental cognitive and sensory features."
+      },
+      {
+        "step": 3,
+        "action": "INSPECT_SCHEMA",
+        "reason": "Reading column types, counts, and null distributions without inspecting individual patient rows."
+      },
+      {
+        "step": 4,
+        "action": "VERIFY_AGGREGATES",
+        "reason": "Confirming empirical feature distributions and class balance through gateway summary stats."
+      },
+      {
+        "step": 5,
+        "action": "FIT_BENCHMARK_FOLDS",
+        "reason": "Training ZZ-feature-map quantum kernel and classical baselines across 5 stratified folds."
+      },
+      {
+        "step": 6,
+        "action": "ESTIMATE_INTERVALS",
+        "reason": "Calculating empirical fold AUROCs, standard errors, and Student-t 95% confidence intervals."
+      },
+      {
+        "step": 7,
+        "action": "GUARD_ARBITRATION",
+        "reason": "Submitting fold metrics to guard module for conservative hypothesis testing and Holm-Bonferroni correction."
+      },
+      {
+        "step": 8,
+        "action": "NOTARISE_POST_QUANTUM",
+        "reason": "Signing run artifact with ML-DSA-65 post-quantum signature and writing to append-only audit ledger."
+      }
+    ],
+    "verdict": {
+      "run_id": "7f698800d527",
+      "claim": "Classical LogisticRegression outperformed QuantumKernel-ZZFeatureMap by 0.2031 AUROC (0.5969 vs 0.3937, 95% CI [-0.3672, -0.0391], corrected p = 0.1054). No quantum advantage observed.",
+      "quantum_better": false,
+      "metric_used": "roc_auc",
+      "winning_model": "LogisticRegression",
+      "best_classical_model": "LogisticRegression",
+      "best_quantum_model": "QuantumKernel-ZZFeatureMap",
+      "classical_best": 0.596875,
+      "quantum_best": 0.39375,
+      "delta": -0.20312500000000006,
+      "gap_ci_lower": -0.36717534042523287,
+      "gap_ci_upper": -0.039074659574767245,
+      "p_value": 0.026347742618031047,
+      "p_value_corrected": 0.10539097047212419,
+      "confidence_note": "Based on 80 samples across 5 stratified folds with seed 42. Neurodevelopmental phenotyping on small sample cohorts exhibits substantial sampling noise; all findings constitute exploratory benchmarks."
+    },
+    "random_seed": 42,
+    "python_version": "3.11.17",
+    "notes": ""
+  },
+  "signature_hex": "81795dfeb01c1ce1279c67b8efa6277c1da5eae8e7d3d3535669d094e0539d9bb7e9f212712b64962402c65efd9de6973e7134bc70607317ab8d9c8ea0518a24c473ee2c3aa5c9780411dabeba998d0f33f0873f3005a6cec54ec66276db15c8673b6ebba36f7ea224343c5b67e82231d78f8997ad8a8786960ec70dc51f7d68e89f6644c0f60a1fe5d430c739c08cb0508ff1bd710a82fafabf55dbb5cfccc29b1adf8ffb1d1715218490ca71b5826189a49382a3af5783c587fcd48dc84310b643159f0a98bac7dea54229f27e584d74f18e841cdccbc4edff569381bf2438379af046169b8eb2c2305bc893a40330056f25e14a771896ef0d29ce2150e3deacf578fa095861ba572a9d4e677fc905ee8b8181283215ac31ed2acede98433d602af3b1175efb7b2bcbcf479caacf8a9ad639cf22a51fbbd84a5390bd4c56d901b04e0fbf529dff1ad3f96cc9b2fa0c71238f5c40415e1177a0663ab49710ed950aeaf94614795614b76998fce7ac111dedf0f1df1f5c76df269b79e4069023c014ee604a585e6369244b56c27f638da39690c47045ea0dfb754536bbfdc0e5e823344f7d536c383d1e6b482f42430d9c1e2319d6660020938e2b0454db71d781d4fe1b62f8f238a9c5908d386372b78c0bfe0792b4859f38e322932c0ac85840b93ee286208762f9ec4a063a8a8316fd06b39d77675040ca074b1ab2b077fadcaac55e638a9fe4246ec802d6d8b4d2e49293c1840d3db8964ba1cbf6bee06d91a6d0cd9ecab7336344e9c4bd3100a4292a43aa9e552dc2db3bd56758efe46149db1f8d91bd6013c864a03d2effbdc0321d437850bd8f946bd39d110c58e2814e100f631e0a86f199dbe1f1edd899cedcb42bd7a8b3e155bbee0454203ee3011091b9369a63cc8d7db79608b9975ac8bcf4447c3987b94db482203d13d8627feb0939fe2fafc46592a023ccaff1dbd43077d523db9dba6fed760695bbb70419d95e7e3d593ea60ad896399e97e157b9adf097bf516f5b92982ff08a577c9e3f4665ea5c9c8f6d45ed41cd8fbb038c7faefa134f3e59999e988425938cb7125d9533867f6f1d7776e2316c9cc66bf07186e655e52b67db0dc5563ab312e625c10d33fc5fd7e45724e7b5fccd183814e134e0d740bb83ebf585ab029318426a60a7e084c24187bc3a251e581ec38b814abdc0f18c45da5a513f1f00c7883fd572833df111e832298f05411a96f0db681ed5c4826991ce9b6c3fd3e3c0e639fb9226c699169a2ca4f578f45b81e9be3d7ce3d80d5ba33a4277a3ca204ae5fe2301d4fffab8e90776cf871e8ee49650a08a9ca0ee6aba82689ee42d28e5f16723051759a0a6a35d3a146e4d929f73471c2b28cccd062ff0078c3679d46015cc88191f08032160f6a59e8443a8f1763cdc062ca89c1c5d666b081ecc8a2ca11b050455348453e1b0a09cc00901960e5108121981e08b3140af4ca3e9920cfa57d11f0aa6610ea33c9180ce350b4d250e6ee4c15208ca890d1f2cbcb459d723e674b04a5b1a7bbd7af263a36efed59fc02a3b4fcaa8d880ed6e0cd78a21a1c151e3c33d6db8f31c16e88b10265f761826e1e957ef8be31a91cea9966130d66f365e1bfd8d1e39ef5b6a8e17567ac7b68f1c184d66d84c8831f3249a2aad17d3f11d575b598395da085c26e87c1c28964c61500792bab17340e6409050ec2a26d015aad90a35e25b0b7b10e986fd3a813dbc751640468db8abbfb112b7484176b69cbbc245cc8bccb8b3fc11cd4a3367535ade008e27078ed2fca2ffcfa38358698cf7058de5b752cab19c4212e2bf321c3d4a99caa1a7822f22e3f0f141dc9d97b62aa815035a19dd9c3d146a4e46cfb0a76bd251a7ff00d7712c212b4ba3949920f436421fe93bc16e0ba52c2eaf560409271aec0244ae7fffcaf267ec2522c2604412959d546e4ce9b8e6ec61357dcfcefe77bc3ff4db87cb7a8667c5e331304d856ab62fae6f207a2d0bef7f71b3bebc49cea2f9d6daf54efabbd9eff38d96cba87acefc65f3b06960586db5873511f66a5df67b0ea45e8cacf893e368623fe3005296a47bda3009428f6be8f60b64bf7224c2e28514c59dd3e60cb92776b67c082d340feca223c95b519df3687120c6365c84396a33234d4ae1fa667862a42105be36c33b16b6887554881a93ed5bef6d43e70e952de42767bb6923dd328f3b33fb61a2dd1d883232e26831d970d8fb54db909128b9c0dac9d376d1500bc86b8de90db45edb2afeb2f4e76282feba36eefdc3fc3eca7c35350a7aef411790263cd976e44616ba64a1251dbafd1d00524df6265d23fd5e22927bbc751a1287c60340a1996f111bd840670815d6a50cd0598fccced248c744a1da73e9f0a4e71acee3728919339cd30d3c32e4a2c46075eb3a4cff801238fc0b2afae74ebb1ce85970cf4445568284968e7c5a9bf051cd331d588e31b8e7a47506eac80cd007cc1d7f943e8e52f0cfcb859ad7f31c599872070cef62b56c15504f8032bae3bec229a867044639d618c4c9ac1d7bf375bc69803afab52afebdbf04c04f1d97eb9420879af801edbcd4fcf61aeee1eb6e9910cbadb2392ee7f189655ffedc46b97d0fe5f2a195c787f25a328f20c8ded09672a81eae4da9783df5164c8ffbbbde7e982272cc110fa6b0abc28ee09fa8e2debbf21c04427fcc170e87eb6f8268af680869e7f6bf73be4eb2aa6acd7efd7d73c19d9196aa00dd8fea3f78cd4fda5e88161c07c069b74c7ed27d95e827c50e18787842a280fe588be43d4338e83b1574e539d03a254966db2fc7b0b3712fd6618f61952c7825eae369e1cf172eedd6206923ca8af325dda587987b2ab55f82f90283d54039ec4a49cce09f21d2d53b0d1113c44d4b46488f296092b7a21c5c72d398b8fb09e547556c7bd73e6e0a27ee1f2e694505b2381113ce31800ef20f409a538662d57946a7d647d84536e78ffa36d3cf1d130917b3e72d8699bdb7ca5186e695263a927a84bb2e693722b666b86de924bb87727e6d52f312c622e02b1689c8c697bd6f4cc73e8e17cdbbe43861ef575e4b058da4be9eb04ee75ca0b6861de0f89934317ce73fbac5c4a14b1c21c2b1c95a30443e91abe1aa8d6a5a22af6ccbcdc5c59fb02a38a44642bc18d82d548a91ef411781b700306332a46aa98f56f9c615260cf1fda09ec7172d85675b2246855b5953ebb5cb7db095dd0a0f95ad86a3eee5f21df1f0cdb91ac2583964aa04cdb103728215c7b13ca77896f2c2af0cf86f378ace4e7aae92d11646e09d55f11ae78aa85ac16a25a5bf22fa1a7b600d220ecd30ae6bb09156e37e5b76ad7b858b091ad087dddad3a877554a78a097727502774584035f2c6bf6e60f5d752ca357e9c3bde156afe9d13567f8e94e0011544691b0e2c3ace3974a498fff43579b61e405cf95ebe9e33003b7410ef1bcd3e45f88be3cb09913940d111cc65c3123aec99d8cdc958775ac2b076e650d9c4ad30e133590c6666c49cba79bbab73f7f7cf89bdbfce0a735eccd4422a67f7b788b1158df4a6e3a3a4aa6c0bdc60c81e47182d736dad2279a9701b5305e14f5178815bbfb34b564f6ea58a56511944fa3d040d5c66912d2cb053c7d2e0c49efc7c6dbbbc7a6cf621b166c40c06ae35b9d508c4f18b674c6d6c63f606438fa14e011eeba092abe4ba655c5048805cd9c12ed8933ff4d816c417b877554415237616a54f18f0e434b41f5c4a0dd87e7ec2799b1cf9707ed47be3593b681054aa3b24f0cbfad5de9c586a70a9dc94915706c43d91dedab6154c58172298e0f0d4ef95fe8e2e330ebbead5d40b3e66336b26274f5b54acc226dd0f10c54744cb8b1302c02e4fa56f3b9283a18e7304798ed35b891c06c1af34a53bdea52b6be9a09dfdca8122d56146dfa533fd1f90f304bd2649c260b28277010c9e0279a9d1b681096bb2535c1e5438fc1b891457cb2a139496fde5b00aab5ce538327dff7dd63e07c15fd3fcfeebaa36f18c502d127f52ddfdbbf520971c3728ce230a0083935db7cef623239913248399afe41797efd7f886ce91639e12f0480e86fdd5ebe8db2cfcd0e9737b841827cc1a3522e3bf17cef8314fd2d70543fb54f42d3c961d455f38713db74854e7f4a0983b8c1e15b57aad2cab5f4bc4d8105e8629372f82cb54807c32f8bfe0359854a63aec0ff8c7fa09427768292f9a3dafadb621aec7ae65f9451132a21675b074b43853f83f27ed3c7e1fbed87aa095ef30ff8750355212e7bee5c04574c526508a9f3af657aeafc8d3fa9896827836f4970e3e3954e66c062411acccc7772727dde6e7ec0cd732e323797f5fe1eeadca70c7a4ba6aef23f98de180cd4fe1e8f8027f83ab2f8da43a988b8ad0213effe4fa4ebb70e497499d7a62ab472dff83878299a2e9e7e5d752090c1f41c84e1061616cad1fecdf632f77e455a510acacf998e35ca995b582cd184390688ea85572f0a4b504e311913ebd9fbeec8b827c7ad994386b4a5f2c7bcb00d6fb0ff53ac75feb3368599229f76d784a17add1be6b48e3f13bb61951175b95a90a98642cd89316d1e94c6060e7782898cb4ddfa454d5fa2d9f2f712161c295b99b1d73f529498b7cddbf9111e5c5d7276dfed18295e92e2f000000000000000000009101820282e",
+  "public_key_hex": "4f426851cd51f31fa71e164443dac02eaa75883293a0edd5dc27a67b8d8acda6f44e239b1136af77a33bd966cc4b074f02409470aa11a7deb79cb85a25d960eb259686cb9e9db42cac432249146a8cf27ef3a55ef35704357f66579d929c4ec1ab07505be8a7ce24e70e4e3ce106ad53d3fef057ca55626b3829888a9f055a566305918627a6ca62a9f5e89ce6f4e6e4cd3db07e53365aa5e2bdc9d593f8b410d3e92960dfd54207ce548659b337a48e59b295c1904ffe8434f33d19116c6f0cba41dd7f169f423c91a4e7462e0ad159054a5604dfc9006f0e70cfa26ed0d09776d75577ba46b05dc99ececb98abbadec117bdd2d6d6e783ba9559c3f7bc8cdcf1a48e1b9c4177162b40d6166d3c377d0c4cb047e3b1bc7057497baaf61d93216b0a9d41619da1d1acfba8c14f0f1e69465e62f9a650d8030a7df4719f8f335aac84c650e657cc2e8421b3df79dcb74e5fdd176bd7792e78023b13478b91fc25397e05529ad386109172157b251a8284cdad16119c7c69f1d87d800afd32ada89aafdff443bb4efd2dc67b8f300e1863140b2246e0624efc6f446ba7cd7f9e1923f2839a6a40f46af0bac2836acbba43f9c4d7c6bc1acb6d3bae84938970939429fa70cc0a6311ccaac27cfbef9677fa341278e7c2e9e70899ba23d4623e4dde0b3c1e5dfaee63ff7239d9a37d24091d7c89afcd6c7e3d423e6808b19adff6470d3214663d57810bf3e40c5adbde6fa57611b039ca8fdf64c931358cb3dc9f704ec305e193475b7bea499ce715fa6cd76ca4746bb9401cb732b3d9e922ed2523ad0261e467557fb2638fce02d6eeb595d41238191ccad2d27729af5985d839fa8aa1361534bf2ed82260f8ccafbcc3f31fb91866565d596f3a43dcf69ce30d7ce2fbb8041d5ac4ea997d1a078dbd7a8483558917488e25f1f30eb56a9402385b122e0dcb6298e808476fdc6cbca099ba0ecaee75b48f85b7c35a991b44d570da03423ae057e5be2092f8ab4125c2c66dc74805198c6ad254b407444177f98bd9132043c5c4c7f2266e50cd67526f21aa087cbb382cff3d03309ac77ef3d7780524de7659558622b4eef38c8402c715917377e4308ce0fa36adf09b908d65a51a50caf7b9e71d2fef46cd7c68954977837cc5f479c1699d7fd6d489c443500eccb4ff3888ed9c4e050928ad1240814104d29cc830df07a229c5abd4d68b76163f2b0f2879729f2292ad5e4ee9239c847acd4f5e77f00ed0c24a4af4d3229f847319b94e0d27a4008d3c17ab5f54085ec844d0d51bc897b269c0a9920e9fa49cf7a9cae389e57cee008f94e3360a7afe5c4304e31e46d349c48def933e3cedaaaddf869d2149bd314f47aa77900cc3adc377e306dd41f56d0106e9f42688e672ef8ee18ced95298d1fd518d0535fc118ec3ea7999682bb0cae2bfb930c13d1f6293cc451ed0eda5b5e423f0287fddd9f8ef1aa9bcd85efc8a8450e3c40799e80f346d05489a9a23a5cdf1219a7a0432a248274138de3b5de4eec212ed9fd03e35b37808419426ba0c396c61f52dcf8c66155e960f8aca527949390e77a05a026d571b4df344eaf800f3bf7d57219968987d278a70ecb8d76b6ff27c063ff42bdd0aa8e08679078175bde5b2c751ffc47d73c43a39be95a9bc7978810bffb55568660ca257119a270877a84c4d3608a8edc27f6c79fb88240b82a6626501871fac7c084d2f84b8a666215a209093577ce1084f2e2d91226558a617cdaa71022d5f8aab9dda069805e337f84bdf656619743a43c330d0b633704aaf81e52881107302ae06652fccc0e5ab2e720f07dba62b5335cd8128176b45b9f9dea3bab54b6d689a5765ece814da5391f951f033a24a8b254800bd33e9dc04f04bb6c5beef69dc8e40e0f41313b17ead296ee0727616a9de8fbc96f840a39462a8ddfb80e0f7a3c0c4701d4193c641cd9934c94c69f490d763ff40e921514ccde070a56c2e0d19a72872b876ccd2946f22f77f0cb6447c74bea3151367c9f5820eaa9a77bc88f4508670e5c72d35beb163f6fddc13c81bd233c06fd36cba35daa4d9474f8af4913ba95831b6978a2bc9ee80971563b58563440a1bef84625e81e1ec6500d466450cc066f5d67358ef1fe7d37f8c7b7db3434cda8066952a2990501f51c91328900a6e0140a0e39c4714e15679766e3e96176f68fd9553554fad55ccc2192dd0c06787c5c2f1328c152db72b37e5b403d4dbcf08e2cbc19532f674b9b2c17734e5f0c3d3c16eb8eaee1d4c3c506b7fdc819bccf3c704129f252b85b6272a5fca150069bf813631e945d1f2c4024d0baf819ba8f7b41c353b18c79d354f6ba7c4b3461a72ee23c9b0519ea82c178eeb013ca6b2af8b2d72872c2430e1b0c7243697cc0f706bf903605677e47ce3e92ad3389f8fbaf551a73c25ae5f8aaa24377df46bed1c52b69444f4abe2483552e13a8607b75aa76cfc5b97ddd59ca9491598a3dcf422e59493ab5dc4a7ae081123ff6ee51b5a2a612adff2e67780800348b3afc251820983e4f0cd087e20a14c86b872e41ddbd6ca86461490e6edbed99bc286d23bb76f2532b9c1e851c8916a4022081bebb564e258cdf9d3b92924c5afc70da19f34abd3e1637a95ee9531ecdae023b254f0fa4edd6d42a338f9ee89bf09cae5fbd71a7b5f13c26015d3b8fa8f2deb1bc6fb9eafc2fe30a0fc9d03440e6370b7df30857c2b5595fefa83cfe0fd1e2767062aea6909f829eed9e56812b0d4a",
+  "algorithm": "ML-DSA-65"
+}
