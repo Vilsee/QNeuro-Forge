@@ -188,7 +188,7 @@ def evaluate_advantage(
         category = VerdictCategory.ADVANTAGE_SUPPORTED
         sentence = (
             f"Quantum configuration {best_q.config_id} demonstrated a statistically supported advantage "
-            f"over classical baseline {best_c.config_id} with an AUROC delta of {delta:+.4f} "
+            f"over classical baseline {best_c.config_id} with a {metric_label} delta of {delta:+.4f} "
             f"(bootstrap 95% CI [{ci_low:+.4f}, {ci_high:+.4f}], Nadeau-Bengio corrected p = {best_corr_p:.4f} "
             f"adjusted across {configs_tried} quantum configurations)."
         )
@@ -196,14 +196,14 @@ def evaluate_advantage(
         category = VerdictCategory.CLASSICAL_BETTER
         sentence = (
             f"Classical baseline {best_c.config_id} outperformed best quantum configuration {best_q.config_id} "
-            f"by {abs(delta):.4f} AUROC ({c_score:.4f} vs {q_score:.4f}, bootstrap 95% CI [{ci_low:+.4f}, {ci_high:+.4f}], "
+            f"by {abs(delta):.4f} {metric_label} ({c_score:.4f} vs {q_score:.4f}, bootstrap 95% CI [{ci_low:+.4f}, {ci_high:+.4f}], "
             f"Nadeau-Bengio corrected p = {best_corr_p:.4f} across {configs_tried} quantum configurations). "
             f"No quantum advantage observed."
         )
     else:
         category = VerdictCategory.NO_DIFFERENCE
         sentence = (
-            f"Observed AUROC delta of {delta:+.4f} between {best_q.config_id} ({q_score:.4f}) and "
+            f"Observed {metric_label} delta of {delta:+.4f} between {best_q.config_id} ({q_score:.4f}) and "
             f"{best_c.config_id} ({c_score:.4f}) with bootstrap 95% CI [{ci_low:+.4f}, {ci_high:+.4f}] "
             f"and Nadeau-Bengio corrected p = {best_corr_p:.4f} across {configs_tried} quantum configurations "
             f"does not reject the null hypothesis at threshold {ADVANTAGE_THRESHOLD:.2f}. "

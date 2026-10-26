@@ -186,5 +186,101 @@ def audit(
         raise typer.Exit(code=1)
 
 
+# --------------------------------------------------------------------------- study
+study_app = typer.Typer(help="Re-check, sign and verify the Team Morphos heart-failure QSVM study.")
+app.add_typer(study_app, name="study")
+
+
+def _line(ok: bool, name: str, detail: str, expected: str = "PASS") -> bool:
+    got = "PASS" if ok else "FAIL"
+    if expected == "FAIL":
+        tag = "DETECTED" if got == "FAIL" else "MISSED"
+    else:
+        tag = got
+    typer.echo(f"  [{tag}] {name}  ({detail})")
+    return got == expected
+
+
+@study_app.command("build")
+def study_build(fast: bool = typer.Option(False, "--fast", help="Skip sweeps and the no-time guard run.")) -> None:
+    """Re-run every experiment, check every claim, then sign the result with ML-DSA-65."""
+    from qneuro.study.build import build
+
+    env = build(fast=fast, log=typer.echo)
+    typer.echo(f"Signed study written to public/data/study.json (sha256 {env['study_sha256'][:16]}...)")
+
+
+@study_app.command("verify")
+def study_verify() -> None:
+    """Verify the study signature, every artifact hash, and the audit chain."""
+    from qneuro.study.build import verify
+
+    ok_all = True
+    typer.echo("Verifying public/data/study.json")
+    for c in verify():
+        ok_all &= _line(c["ok"], c["name"], c["detail"])
+    if not ok_all:
+        typer.echo("VERIFICATION FAILED", err=True)
+        raise typer.Exit(code=1)
+    typer.echo("ALL CHECKS PASSED")
+
+
+@study_app.command("tamper-demo")
+def study_tamper_demo() -> None:
+    """Change one digit in a copy of the submission and in a copy of the study, then verify both."""
+    from qneuro.study.build import tamper_demo
+
+    ok_all = True
+    for c in tamper_demo():
+        ok_all &= _line(c["ok"], c["name"], c["detail"], expected=c["expected"])
+    typer.echo("Both edits were detected." if ok_all else "A tampered file passed verification.")
+    if not ok_all:
+        raise typer.Exit(code=1)
+
+
+@study_app.command("reproduce")
+def study_reproduce() -> None:
+    """Live re-run of the submitted QSVM (E5) and the local ZZ benchmark (E6)."""
+    from qneuro.study import experiments as ex
+
+    typer.echo("E5: independent angle-embedding kernel against the submitted file")
+    e5 = ex.reproduce_e5()
+    h, hs = e5["holdout"], e5["holdout_submitted"]
+    for k in ("mcc", "accuracy", "f1", "precision", "recall", "roc_auc"):
+        typer.echo(f"  holdout {k:<10} ours {h[k]:.6f}   submitted {hs[k]:.6f}   diff {abs(h[k] - hs[k]):.6f}")
+    typer.echo(f"  confusion matrix {e5['holdout_confusion']}")
+    typer.echo(f"  CV folds ours      {e5['cv_fold_mcc']}")
+    typer.echo(f"  CV folds submitted {e5['cv_fold_mcc_submitted']}   match: {e5['fold_match']}")
+    typer.echo(f"  true ZZ kernel, same range, holdout MCC {e5['zz_same_range_holdout_mcc']:.4f}  (differs, so the submitted kernel is not ZZ)")
+    typer.echo("E6: local true-ZZ benchmark against the stored file")
+    cmp_ = ex.compare_with_stored_e6(ex.benchmark_e6())
+    typer.echo(f"  differing values: {cmp_['n_differences']}  identical: {cmp_['identical']}")
+
+
+@study_app.command("prepare")
+def study_prepare(
+    out: Path = typer.Option(Path("data/prepared"), help="Output folder for the four CSVs."),
+    local_csv: Optional[Path] = typer.Option(None, help="Use a local heart_failure_clinical_records CSV instead of downloading."),
+) -> None:
+    """Rebuild the train and test CSVs from UCI dataset 519 and print their SHA-256 hashes."""
+    from qneuro.study.data import prepare_from_uci
+
+    for name, digest in prepare_from_uci(out, local_csv).items():
+        typer.echo(f"{digest}  {name}")
+
+
+@study_app.command("serve")
+def study_serve(port: int = typer.Option(8080, "--port", "-p")) -> None:
+    """Serve the static study site from public/ (the same files Vercel serves)."""
+    import functools
+    import http.server
+
+    root = Path(__file__).resolve().parents[1] / "public"
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(root))
+    typer.echo(f"Study site at http://127.0.0.1:{port}/  (Ctrl+C to stop)")
+    with http.server.ThreadingHTTPServer(("127.0.0.1", port), handler) as srv:
+        srv.serve_forever()
+
+
 if __name__ == "__main__":
     app()

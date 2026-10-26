@@ -1,7 +1,7 @@
 [project]
 name = "qneuro-forge"
-version = "0.1.0"
-description = "Quantum-kernel vs classical ML benchmarks on neurodevelopmental datasets, signed with post-quantum cryptography."
+version = "0.2.0"
+description = "Quantum-kernel vs classical ML benchmarks, with a re-check, signing and verification layer for the Team Morphos heart-failure QSVM study."
 requires-python = ">=3.11"
 dependencies = [
     "pennylane>=0.35.0",
@@ -26,6 +26,12 @@ dependencies = [
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
+]
+study = [
+    "ucimlrepo>=0.0.7",
+]
+demo = [
+    "playwright>=1.45",
 ]
 
 [project.scripts]

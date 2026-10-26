@@ -1,0 +1,2077 @@
+{
+ "study": {
+  "meta": {
+   "title": "Team Morphos: QSVM survival prediction on heart failure records, re-checked",
+   "built_at": "2026-10-25T16:16:03+00:00",
+   "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.4",
+    "scikit_learn": "1.8.0",
+    "scipy": "1.17.1"
+   },
+   "dataset": {
+    "name": "Heart Failure Clinical Records",
+    "source": "UCI Machine Learning Repository, id 519",
+    "patients": 299,
+    "train": 239,
+    "test": 60,
+    "train_death_rate": 0.3222,
+    "test_death_rate": 0.3167,
+    "test_deaths": 19,
+    "split": "stratified 80/20, random_state 7, scaler fit on training rows"
+   },
+   "fast_build": false
+  },
+  "manifest": [
+   {
+    "path": "original/hf_withtime_train.csv",
+    "sha256": "896dc578743fc77c1ccf210423515e006978ada2a3eb63dead46da831fee929a",
+    "bytes": 19226,
+    "role": "Training rows, with follow-up time (239 patients)"
+   },
+   {
+    "path": "original/hf_withtime_test.csv",
+    "sha256": "ab66174963ac3f7603b6ffcc69d6131c125fe3d344f208d7f456bedd9ff4016a",
+    "bytes": 4927,
+    "role": "Holdout rows, with follow-up time (60 patients)"
+   },
+   {
+    "path": "original/hf_notime_train.csv",
+    "sha256": "77aaf321de8adf278eec8f91dfb92e09316010038f6d532a24a80879e1ad75b8",
+    "bytes": 16308,
+    "role": "Training rows, serum sodium instead of time"
+   },
+   {
+    "path": "original/hf_notime_test.csv",
+    "sha256": "c2c8cf09f82fae4091733b2a43389e3e17777d06adf02afd091c30a7870396e5",
+    "bytes": 4173,
+    "role": "Holdout rows, serum sodium instead of time"
+   },
+   {
+    "path": "scaled_0.3/hf_withtime_s03_train.csv",
+    "sha256": "a737ccc154fe175af413b73f70a841f704db2dca9e85b6bc5e885a68114d444f",
+    "bytes": 8980,
+    "role": "Training rows, inputs shrunk to 0 to 0.3"
+   },
+   {
+    "path": "scaled_0.3/hf_withtime_s03_test.csv",
+    "sha256": "775b45a95c1942e4c9d1674da1ce95a6cf333b107827c0f0b21169324f592961",
+    "bytes": 2283,
+    "role": "Holdout rows, inputs shrunk to 0 to 0.3"
+   },
+   {
+    "path": "scaled_0.3/hf_notime_s03_train.csv",
+    "sha256": "480dd0ac4ecfa201fc8dac7880082833f72ba946e4e529ea26efceebf9e4553a",
+    "bytes": 8753,
+    "role": "Training rows, no time, shrunk to 0 to 0.3"
+   },
+   {
+    "path": "scaled_0.3/hf_notime_s03_test.csv",
+    "sha256": "9f2e714c2a7e45d512521607a4af2c1d5c262d21b0b2506ddd26ee9a00192307",
+    "bytes": 2218,
+    "role": "Holdout rows, no time, shrunk to 0 to 0.3"
+   },
+   {
+    "path": "bloq_outputs/E1_notime_config.json",
+    "sha256": "800352c85fa520a44978d551b39d5c5a37e80ca6a6ce27327305265174155423",
+    "bytes": 1778,
+    "role": "Raw Bloq platform output, experiment E1"
+   },
+   {
+    "path": "bloq_outputs/E2_withtime_config.json",
+    "sha256": "d76cc4ed5570019f35df3686867cdc31a40695b9de09356999fabbdc1e0da8b8",
+    "bytes": 1930,
+    "role": "Raw Bloq platform output, experiment E2"
+   },
+   {
+    "path": "submissions/SUBMITTED_corrected.json",
+    "sha256": "9acf3c8890b13439df41e3c74eead66396eb3b5d3d9303fe6951730739429517",
+    "bytes": 6556,
+    "role": "The file submitted to the hackathon (E5)"
+   },
+   {
+    "path": "submissions/E5_original_export.json",
+    "sha256": "6aef725f1b6c1e36dee06c4b764341cd9213d0f3a6262d4abe945c42ce840af7",
+    "bytes": 6679,
+    "role": "Bloq pipeline export before three text fields were corrected"
+   },
+   {
+    "path": "submissions/E6_local_zz_NOT_submitted.json",
+    "sha256": "6c29539ae6fb4001af701c605e7d96e32b43b849757f6114e38669f1f72f0808",
+    "bytes": 6621,
+    "role": "Local ZZ benchmark, not submitted (E6)"
+   },
+   {
+    "path": "scripts_original/prepare_hf.py",
+    "sha256": "20d6db3e4065d3c00c5a7fd19fbbf8df9c71debaa86499e467a4f0f695a92894",
+    "bytes": 1713,
+    "role": "Data preparation script"
+   },
+   {
+    "path": "scripts_original/local_qsvm.py",
+    "sha256": "24546f5e550b17b69284eb2837968f794761d0a670d64e5e73bbd9888deeeb24",
+    "bytes": 1036,
+    "role": "Local QSVM script"
+   },
+   {
+    "path": "scripts_original/sweep1_depth_scale.py",
+    "sha256": "e23f59c89c36f0be13bafad7cf63ce4c92ac87d34323b96cfaaf9f87102d66dc",
+    "bytes": 1912,
+    "role": "Sweep 1 script (E3)"
+   },
+   {
+    "path": "scripts_original/sweep2_preprocessing.py",
+    "sha256": "5e90e711b17b1488c6d5a53aa86251aa5539b9ce3c312ed767350ebea5a0967c",
+    "bytes": 2278,
+    "role": "Sweep 2 script (E4)"
+   },
+   {
+    "path": "scripts_original/zz_benchmark.py",
+    "sha256": "0334139109aac435db0e37a32738d06b3b387cca4bfc33b47488a732980b8cfa",
+    "bytes": 5866,
+    "role": "ZZ benchmark script (E6)"
+   }
+  ],
+  "e5": {
+   "cv_fold_mcc": [
+    0.3182,
+    0.3586,
+    0.5139,
+    0.6167,
+    0.7108
+   ],
+   "cv_fold_mcc_submitted": [
+    0.3182,
+    0.3586,
+    0.5139,
+    0.6325,
+    0.7108
+   ],
+   "fold_match": [
+    true,
+    true,
+    true,
+    false,
+    true
+   ],
+   "cv_mcc_mean": 0.5036,
+   "cv_mcc_mean_submitted": 0.5068,
+   "holdout": {
+    "mcc": 0.7459756021776387,
+    "accuracy": 0.8833333333333333,
+    "f1": 0.8292682926829268,
+    "precision": 0.7727272727272727,
+    "recall": 0.8947368421052632,
+    "roc_auc": 0.9345314505776637
+   },
+   "holdout_submitted": {
+    "mcc": 0.7459756021776387,
+    "accuracy": 0.8833333333333333,
+    "f1": 0.8292682926829268,
+    "precision": 0.7727272727272727,
+    "recall": 0.8947368421052632,
+    "roc_auc": 0.9332477535301669,
+    "train_time_seconds": 0.010311200021533296
+   },
+   "holdout_max_abs_diff": 0.0012836970474968679,
+   "holdout_confusion": [
+    [
+     36,
+     5
+    ],
+    [
+     2,
+     17
+    ]
+   ],
+   "zz_same_range_holdout_mcc": 0.6716,
+   "classical": {
+    "LogisticRegression": {
+     "recipe": "LogisticRegression, inputs x 0.3, folds seed 42",
+     "reproduced_cv_mcc": 0.0,
+     "submitted_cv_mcc": 0.0,
+     "reproduced_holdout_mcc": 0.1912,
+     "submitted_holdout_mcc": 0.1912,
+     "reproduced": true
+    },
+    "SVM-RBF": {
+     "recipe": "SVM-RBF, inputs x 0.3, folds seed 42",
+     "reproduced_cv_mcc": 0.525,
+     "submitted_cv_mcc": 0.525,
+     "reproduced_holdout_mcc": 0.7785,
+     "submitted_holdout_mcc": 0.7785,
+     "reproduced": true
+    },
+    "RandomForest": {
+     "recipe": "RandomForest, inputs x 0.3, folds seed 42",
+     "reproduced_cv_mcc": 0.6074,
+     "submitted_cv_mcc": 0.6291,
+     "reproduced_holdout_mcc": 0.6806,
+     "submitted_holdout_mcc": 0.7785,
+     "reproduced": false
+    },
+    "GradientBoosting": {
+     "recipe": "GradientBoosting, inputs x 0.3, folds seed 42",
+     "reproduced_cv_mcc": 0.5876,
+     "submitted_cv_mcc": 0.5752,
+     "reproduced_holdout_mcc": 0.7328,
+     "submitted_holdout_mcc": 0.7785,
+     "reproduced": false
+    },
+    "XGBoost": {
+     "recipe": "XGBoost, inputs x 0.3, folds seed 42",
+     "reproduced_cv_mcc": 0.5775,
+     "submitted_cv_mcc": 0.6112,
+     "reproduced_holdout_mcc": 0.6321,
+     "submitted_holdout_mcc": 0.6559,
+     "reproduced": false
+    }
+   },
+   "logreg_full_range": {
+    "cv_mcc": 0.5483,
+    "holdout_mcc": 0.746
+   },
+   "paired_vs_rf": {
+    "delta_mcc": -0.1223,
+    "ci_95": [
+     -0.2895,
+     0.0449
+    ],
+    "t": -2.0306,
+    "p": 0.1121
+   }
+  },
+  "e6": {
+   "performance_summary": {
+    "QSVM (Quantum Kernel)": {
+     "cv_5fold": {
+      "mcc_mean": 0.5688,
+      "mcc_ci_95": [
+       0.4273,
+       0.7103
+      ],
+      "mcc_folds": [
+       0.4573,
+       0.5427,
+       0.5186,
+       0.5661,
+       0.7593
+      ],
+      "accuracy_mean": 0.8162,
+      "f1_mean": 0.6672,
+      "roc_auc_mean": 0.88
+     },
+     "holdout_test": {
+      "mcc": 0.8054691103977099,
+      "accuracy": 0.9,
+      "f1": 0.8636363636363636,
+      "precision": 0.76,
+      "recall": 1.0,
+      "roc_auc": 0.9255455712451861
+     },
+     "holdout_confusion": [
+      [
+       35,
+       6
+      ],
+      [
+       0,
+       19
+      ]
+     ]
+    },
+    "LogisticRegression": {
+     "cv_5fold": {
+      "mcc_mean": 0.5483,
+      "mcc_ci_95": [
+       0.3713,
+       0.7253
+      ],
+      "mcc_folds": [
+       0.4221,
+       0.4247,
+       0.5186,
+       0.6167,
+       0.7593
+      ],
+      "accuracy_mean": 0.8121,
+      "f1_mean": 0.6314,
+      "roc_auc_mean": 0.8615
+     },
+     "holdout_test": {
+      "mcc": 0.7459756021776387,
+      "accuracy": 0.8833333333333333,
+      "f1": 0.8292682926829268,
+      "precision": 0.7727272727272727,
+      "recall": 0.8947368421052632,
+      "roc_auc": 0.9358151476251604
+     },
+     "holdout_confusion": [
+      [
+       36,
+       5
+      ],
+      [
+       2,
+       17
+      ]
+     ]
+    },
+    "RandomForest": {
+     "cv_5fold": {
+      "mcc_mean": 0.587,
+      "mcc_ci_95": [
+       0.4279,
+       0.7461
+      ],
+      "mcc_folds": [
+       0.4182,
+       0.7091,
+       0.4928,
+       0.6158,
+       0.6991
+      ],
+      "accuracy_mean": 0.8203,
+      "f1_mean": 0.7171,
+      "roc_auc_mean": 0.917
+     },
+     "holdout_test": {
+      "mcc": 0.6805741948407684,
+      "accuracy": 0.8333333333333334,
+      "f1": 0.782608695652174,
+      "precision": 0.6666666666666666,
+      "recall": 0.9473684210526315,
+      "roc_auc": 0.892811296534018
+     },
+     "holdout_confusion": [
+      [
+       32,
+       9
+      ],
+      [
+       1,
+       18
+      ]
+     ]
+    },
+    "GradientBoosting": {
+     "cv_5fold": {
+      "mcc_mean": 0.5876,
+      "mcc_ci_95": [
+       0.4493,
+       0.7259
+      ],
+      "mcc_folds": [
+       0.4573,
+       0.5152,
+       0.6025,
+       0.6124,
+       0.7506
+      ],
+      "accuracy_mean": 0.8204,
+      "f1_mean": 0.7119,
+      "roc_auc_mean": 0.8966
+     },
+     "holdout_test": {
+      "mcc": 0.7327952057001721,
+      "accuracy": 0.8666666666666667,
+      "f1": 0.8181818181818182,
+      "precision": 0.72,
+      "recall": 0.9473684210526315,
+      "roc_auc": 0.9229781771501925
+     },
+     "holdout_confusion": [
+      [
+       34,
+       7
+      ],
+      [
+       1,
+       18
+      ]
+     ]
+    },
+    "SVM-RBF": {
+     "cv_5fold": {
+      "mcc_mean": 0.525,
+      "mcc_ci_95": [
+       0.334,
+       0.7161
+      ],
+      "mcc_folds": [
+       0.3373,
+       0.6487,
+       0.5312,
+       0.4082,
+       0.6996
+      ],
+      "accuracy_mean": 0.7995,
+      "f1_mean": 0.6575,
+      "roc_auc_mean": 0.8824
+     },
+     "holdout_test": {
+      "mcc": 0.7784624283452708,
+      "accuracy": 0.8833333333333333,
+      "f1": 0.8444444444444444,
+      "precision": 0.7307692307692307,
+      "recall": 1.0,
+      "roc_auc": 0.9139922978177151
+     },
+     "holdout_confusion": [
+      [
+       34,
+       7
+      ],
+      [
+       0,
+       19
+      ]
+     ]
+    },
+    "XGBoost": {
+     "cv_5fold": {
+      "mcc_mean": 0.5775,
+      "mcc_ci_95": [
+       0.4458,
+       0.7092
+      ],
+      "mcc_folds": [
+       0.4411,
+       0.5721,
+       0.5121,
+       0.663,
+       0.6991
+      ],
+      "accuracy_mean": 0.8161,
+      "f1_mean": 0.7065,
+      "roc_auc_mean": 0.8988
+     },
+     "holdout_test": {
+      "mcc": 0.6321310123395755,
+      "accuracy": 0.8,
+      "f1": 0.75,
+      "precision": 0.6206896551724138,
+      "recall": 0.9473684210526315,
+      "roc_auc": 0.8908857509627727
+     },
+     "holdout_confusion": [
+      [
+       30,
+       11
+      ],
+      [
+       1,
+       18
+      ]
+     ]
+    }
+   },
+   "statistical_comparison": {
+    "delta_mcc": -0.0182,
+    "delta_ci_95": [
+     -0.1332,
+     0.0968
+    ],
+    "paired_t_statistic": -0.4388,
+    "p_value": 0.6835
+   },
+   "scale_selection": {
+    "1.0": {
+     "cv_mcc": 0.5536,
+     "holdout_mcc": 0.6716,
+     "holdout_accuracy": 0.85
+    },
+    "0.3": {
+     "cv_mcc": 0.5688,
+     "holdout_mcc": 0.8055,
+     "holdout_accuracy": 0.9
+    }
+   },
+   "compare_with_stored": {
+    "n_differences": 0,
+    "differences": [],
+    "identical": true
+   }
+  },
+  "sweeps": {
+   "e3": [
+    {
+     "data": "notime",
+     "range": "0 to 1",
+     "scale": 1.0,
+     "depth": 1,
+     "class_weight": "none",
+     "cv_mcc": 0.3432,
+     "test_mcc": 0.4019,
+     "positives_predicted": 21
+    },
+    {
+     "data": "notime",
+     "range": "0 to 1",
+     "scale": 1.0,
+     "depth": 1,
+     "class_weight": "balanced",
+     "cv_mcc": 0.3902,
+     "test_mcc": 0.417,
+     "positives_predicted": 29
+    },
+    {
+     "data": "notime",
+     "range": "0 to 1",
+     "scale": 1.0,
+     "depth": 2,
+     "class_weight": "none",
+     "cv_mcc": 0.322,
+     "test_mcc": 0.2689,
+     "positives_predicted": 15
+    },
+    {
+     "data": "notime",
+     "range": "0 to 1",
+     "scale": 1.0,
+     "depth": 2,
+     "class_weight": "balanced",
+     "cv_mcc": 0.3591,
+     "test_mcc": 0.3495,
+     "positives_predicted": 32
+    },
+    {
+     "data": "notime",
+     "range": "0 to pi",
+     "scale": 3.1416,
+     "depth": 1,
+     "class_weight": "none",
+     "cv_mcc": 0.2355,
+     "test_mcc": 0.3187,
+     "positives_predicted": 16
+    },
+    {
+     "data": "notime",
+     "range": "0 to pi",
+     "scale": 3.1416,
+     "depth": 1,
+     "class_weight": "balanced",
+     "cv_mcc": 0.3024,
+     "test_mcc": 0.3694,
+     "positives_predicted": 25
+    },
+    {
+     "data": "notime",
+     "range": "0 to pi",
+     "scale": 3.1416,
+     "depth": 2,
+     "class_weight": "none",
+     "cv_mcc": 0.2285,
+     "test_mcc": 0.0801,
+     "positives_predicted": 10
+    },
+    {
+     "data": "notime",
+     "range": "0 to pi",
+     "scale": 3.1416,
+     "depth": 2,
+     "class_weight": "balanced",
+     "cv_mcc": 0.2348,
+     "test_mcc": -0.0131,
+     "positives_predicted": 29
+    },
+    {
+     "data": "notime",
+     "range": "0 to 2pi",
+     "scale": 6.2832,
+     "depth": 1,
+     "class_weight": "none",
+     "cv_mcc": -0.0094,
+     "test_mcc": 0.1314,
+     "positives_predicted": 6
+    },
+    {
+     "data": "notime",
+     "range": "0 to 2pi",
+     "scale": 6.2832,
+     "depth": 1,
+     "class_weight": "balanced",
+     "cv_mcc": 0.1597,
+     "test_mcc": 0.2487,
+     "positives_predicted": 24
+    },
+    {
+     "data": "notime",
+     "range": "0 to 2pi",
+     "scale": 6.2832,
+     "depth": 2,
+     "class_weight": "none",
+     "cv_mcc": -0.1046,
+     "test_mcc": -0.1264,
+     "positives_predicted": 2
+    },
+    {
+     "data": "notime",
+     "range": "0 to 2pi",
+     "scale": 6.2832,
+     "depth": 2,
+     "class_weight": "balanced",
+     "cv_mcc": 0.0066,
+     "test_mcc": 0.0554,
+     "positives_predicted": 26
+    },
+    {
+     "data": "withtime",
+     "range": "0 to 1",
+     "scale": 1.0,
+     "depth": 1,
+     "class_weight": "none",
+     "cv_mcc": 0.519,
+     "test_mcc": 0.6716,
+     "positives_predicted": 22
+    },
+    {
+     "data": "withtime",
+     "range": "0 to 1",
+     "scale": 1.0,
+     "depth": 1,
+     "class_weight": "balanced",
+     "cv_mcc": 0.5473,
+     "test_mcc": 0.6806,
+     "positives_predicted": 27
+    },
+    {
+     "data": "withtime",
+     "range": "0 to 1",
+     "scale": 1.0,
+     "depth": 2,
+     "class_weight": "none",
+     "cv_mcc": 0.4058,
+     "test_mcc": 0.5687,
+     "positives_predicted": 23
+    },
+    {
+     "data": "withtime",
+     "range": "0 to 1",
+     "scale": 1.0,
+     "depth": 2,
+     "class_weight": "balanced",
+     "cv_mcc": 0.4461,
+     "test_mcc": 0.5123,
+     "positives_predicted": 28
+    },
+    {
+     "data": "withtime",
+     "range": "0 to pi",
+     "scale": 3.1416,
+     "depth": 1,
+     "class_weight": "none",
+     "cv_mcc": 0.1602,
+     "test_mcc": 0.233,
+     "positives_predicted": 11
+    },
+    {
+     "data": "withtime",
+     "range": "0 to pi",
+     "scale": 3.1416,
+     "depth": 1,
+     "class_weight": "balanced",
+     "cv_mcc": 0.2033,
+     "test_mcc": 0.3949,
+     "positives_predicted": 24
+    },
+    {
+     "data": "withtime",
+     "range": "0 to pi",
+     "scale": 3.1416,
+     "depth": 2,
+     "class_weight": "none",
+     "cv_mcc": 0.0503,
+     "test_mcc": 0.1404,
+     "positives_predicted": 11
+    },
+    {
+     "data": "withtime",
+     "range": "0 to pi",
+     "scale": 3.1416,
+     "depth": 2,
+     "class_weight": "balanced",
+     "cv_mcc": 0.196,
+     "test_mcc": 0.2968,
+     "positives_predicted": 28
+    },
+    {
+     "data": "withtime",
+     "range": "0 to 2pi",
+     "scale": 6.2832,
+     "depth": 1,
+     "class_weight": "none",
+     "cv_mcc": -0.0108,
+     "test_mcc": 0.0082,
+     "positives_predicted": 3
+    },
+    {
+     "data": "withtime",
+     "range": "0 to 2pi",
+     "scale": 6.2832,
+     "depth": 1,
+     "class_weight": "balanced",
+     "cv_mcc": 0.1849,
+     "test_mcc": 0.0096,
+     "positives_predicted": 28
+    },
+    {
+     "data": "withtime",
+     "range": "0 to 2pi",
+     "scale": 6.2832,
+     "depth": 2,
+     "class_weight": "none",
+     "cv_mcc": 0.1023,
+     "test_mcc": 0.0082,
+     "positives_predicted": 3
+    },
+    {
+     "data": "withtime",
+     "range": "0 to 2pi",
+     "scale": 6.2832,
+     "depth": 2,
+     "class_weight": "balanced",
+     "cv_mcc": 0.0802,
+     "test_mcc": -0.1341,
+     "positives_predicted": 28
+    }
+   ],
+   "e4": [
+    {
+     "data": "notime",
+     "mode": "minmax",
+     "scale": 0.3,
+     "cv_mcc": 0.3961,
+     "test_mcc": 0.4466
+    },
+    {
+     "data": "notime",
+     "mode": "minmax",
+     "scale": 0.5,
+     "cv_mcc": 0.409,
+     "test_mcc": 0.258
+    },
+    {
+     "data": "notime",
+     "mode": "minmax",
+     "scale": 0.75,
+     "cv_mcc": 0.4192,
+     "test_mcc": 0.3268
+    },
+    {
+     "data": "notime",
+     "mode": "minmax",
+     "scale": 1.0,
+     "cv_mcc": 0.4137,
+     "test_mcc": 0.4019
+    },
+    {
+     "data": "notime",
+     "mode": "minmax",
+     "scale": 1.5,
+     "cv_mcc": 0.3341,
+     "test_mcc": 0.1566
+    },
+    {
+     "data": "notime",
+     "mode": "quantile",
+     "scale": 0.3,
+     "cv_mcc": 0.3625,
+     "test_mcc": 0.2027
+    },
+    {
+     "data": "notime",
+     "mode": "quantile",
+     "scale": 0.5,
+     "cv_mcc": 0.3358,
+     "test_mcc": 0.1765
+    },
+    {
+     "data": "notime",
+     "mode": "quantile",
+     "scale": 0.75,
+     "cv_mcc": 0.2692,
+     "test_mcc": 0.258
+    },
+    {
+     "data": "notime",
+     "mode": "quantile",
+     "scale": 1.0,
+     "cv_mcc": 0.3078,
+     "test_mcc": 0.2876
+    },
+    {
+     "data": "notime",
+     "mode": "quantile",
+     "scale": 1.5,
+     "cv_mcc": 0.2043,
+     "test_mcc": 0.3547
+    },
+    {
+     "data": "notime",
+     "mode": "clip",
+     "scale": 0.3,
+     "cv_mcc": 0.4813,
+     "test_mcc": 0.1765
+    },
+    {
+     "data": "notime",
+     "mode": "clip",
+     "scale": 0.5,
+     "cv_mcc": 0.4325,
+     "test_mcc": 0.2999
+    },
+    {
+     "data": "notime",
+     "mode": "clip",
+     "scale": 0.75,
+     "cv_mcc": 0.3985,
+     "test_mcc": 0.2876
+    },
+    {
+     "data": "notime",
+     "mode": "clip",
+     "scale": 1.0,
+     "cv_mcc": 0.368,
+     "test_mcc": 0.258
+    },
+    {
+     "data": "notime",
+     "mode": "clip",
+     "scale": 1.5,
+     "cv_mcc": 0.3857,
+     "test_mcc": 0.2876
+    },
+    {
+     "data": "withtime",
+     "mode": "minmax",
+     "scale": 0.3,
+     "cv_mcc": 0.5999,
+     "test_mcc": 0.8055
+    },
+    {
+     "data": "withtime",
+     "mode": "minmax",
+     "scale": 0.5,
+     "cv_mcc": 0.5438,
+     "test_mcc": 0.746
+    },
+    {
+     "data": "withtime",
+     "mode": "minmax",
+     "scale": 0.75,
+     "cv_mcc": 0.524,
+     "test_mcc": 0.8337
+    },
+    {
+     "data": "withtime",
+     "mode": "minmax",
+     "scale": 1.0,
+     "cv_mcc": 0.5377,
+     "test_mcc": 0.6716
+    },
+    {
+     "data": "withtime",
+     "mode": "minmax",
+     "scale": 1.5,
+     "cv_mcc": 0.5295,
+     "test_mcc": 0.716
+    },
+    {
+     "data": "withtime",
+     "mode": "quantile",
+     "scale": 0.3,
+     "cv_mcc": 0.4974,
+     "test_mcc": 0.6806
+    },
+    {
+     "data": "withtime",
+     "mode": "quantile",
+     "scale": 0.5,
+     "cv_mcc": 0.3803,
+     "test_mcc": 0.5707
+    },
+    {
+     "data": "withtime",
+     "mode": "quantile",
+     "scale": 0.75,
+     "cv_mcc": 0.4086,
+     "test_mcc": 0.6272
+    },
+    {
+     "data": "withtime",
+     "mode": "quantile",
+     "scale": 1.0,
+     "cv_mcc": 0.5022,
+     "test_mcc": 0.6423
+    },
+    {
+     "data": "withtime",
+     "mode": "quantile",
+     "scale": 1.5,
+     "cv_mcc": 0.4156,
+     "test_mcc": 0.3021
+    },
+    {
+     "data": "withtime",
+     "mode": "clip",
+     "scale": 0.3,
+     "cv_mcc": 0.5889,
+     "test_mcc": 0.7277
+    },
+    {
+     "data": "withtime",
+     "mode": "clip",
+     "scale": 0.5,
+     "cv_mcc": 0.5422,
+     "test_mcc": 0.7785
+    },
+    {
+     "data": "withtime",
+     "mode": "clip",
+     "scale": 0.75,
+     "cv_mcc": 0.5728,
+     "test_mcc": 0.5521
+    },
+    {
+     "data": "withtime",
+     "mode": "clip",
+     "scale": 1.0,
+     "cv_mcc": 0.5936,
+     "test_mcc": 0.5707
+    },
+    {
+     "data": "withtime",
+     "mode": "clip",
+     "scale": 1.5,
+     "cv_mcc": 0.4916,
+     "test_mcc": 0.5067
+    }
+   ]
+  },
+  "leakage": {
+   "single_feature": [
+    {
+     "variant": "notime",
+     "feature": "ejection_fraction",
+     "auroc_alone": 0.6881,
+     "direction": "lower value, more deaths"
+    },
+    {
+     "variant": "notime",
+     "feature": "serum_creatinine",
+     "auroc_alone": 0.7528,
+     "direction": "higher value, more deaths"
+    },
+    {
+     "variant": "notime",
+     "feature": "age",
+     "auroc_alone": 0.6419,
+     "direction": "higher value, more deaths"
+    },
+    {
+     "variant": "notime",
+     "feature": "serum_sodium",
+     "auroc_alone": 0.6346,
+     "direction": "lower value, more deaths"
+    },
+    {
+     "variant": "withtime",
+     "feature": "ejection_fraction",
+     "auroc_alone": 0.6881,
+     "direction": "lower value, more deaths"
+    },
+    {
+     "variant": "withtime",
+     "feature": "serum_creatinine",
+     "auroc_alone": 0.7528,
+     "direction": "higher value, more deaths"
+    },
+    {
+     "variant": "withtime",
+     "feature": "age",
+     "auroc_alone": 0.6419,
+     "direction": "higher value, more deaths"
+    },
+    {
+     "variant": "withtime",
+     "feature": "time",
+     "auroc_alone": 0.8116,
+     "direction": "lower value, more deaths"
+    }
+   ],
+   "paired": [
+    {
+     "model": "QSVM (ZZ kernel, inputs x 0.3)",
+     "mcc_with_time": 0.5999,
+     "mcc_without_time": 0.3961,
+     "mcc_drop": 0.2038,
+     "auroc_with_time": 0.8744,
+     "auroc_without_time": 0.7906
+    },
+    {
+     "model": "SVM-RBF",
+     "mcc_with_time": 0.5728,
+     "mcc_without_time": 0.3776,
+     "mcc_drop": 0.1952,
+     "auroc_with_time": 0.8746,
+     "auroc_without_time": 0.7859
+    },
+    {
+     "model": "LogisticRegression",
+     "mcc_with_time": 0.5646,
+     "mcc_without_time": 0.3359,
+     "mcc_drop": 0.2287,
+     "auroc_with_time": 0.8628,
+     "auroc_without_time": 0.7761
+    },
+    {
+     "model": "RandomForest",
+     "mcc_with_time": 0.581,
+     "mcc_without_time": 0.4165,
+     "mcc_drop": 0.1644,
+     "auroc_with_time": 0.9042,
+     "auroc_without_time": 0.7871
+    }
+   ],
+   "note": "Without-time runs put serum_sodium in the place of time; the folds are the same 15 repeated 5-fold splits."
+  },
+  "gap": {
+   "notime": {
+    "splits": 300,
+    "mcc_mean": 0.3918,
+    "mcc_p05": 0.1802,
+    "mcc_p95": 0.5974,
+    "share_mcc_at_most_0_05": 0.0033,
+    "splits_predicting_no_deaths": 0
+   },
+   "withtime": {
+    "splits": 300,
+    "mcc_mean": 0.5473,
+    "mcc_p05": 0.3373,
+    "mcc_p95": 0.7526,
+    "share_mcc_at_most_0_05": 0.0,
+    "splits_predicting_no_deaths": 0
+   }
+  },
+  "sensitivity": {
+   "baseline": 0.746,
+   "one_patient_min": 0.7023,
+   "one_patient_max": 0.7897,
+   "two_patients_min": 0.6587,
+   "two_patients_max": 0.8337
+  },
+  "integrity": {
+   "diff": [
+    {
+     "field": "/metadata/leakage_audit_note",
+     "before": "Regulatory-aware clinical pipeline: evaluates cohort with follow-up time. Benchmark demonstrated that time inflates MCC scores significantly across both quantum and classical baselines.",
+     "after": "This run includes follow-up time, which the track permits. Follow-up time can carry outcome information and would not be available at true prediction time, so reported MCC may be higher than for a deployable model. No no-time comparison is included in this file."
+    },
+    {
+     "field": "/metadata/quantum_configuration/feature_map",
+     "before": "ZZFeatureMap (Angle Embedding product state fidelity)",
+     "after": "Angle Embedding fidelity kernel (product-state, no entanglement)"
+    },
+    {
+     "field": "/statistical_comparison/verdict",
+     "before": "Validation benchmark completed. Follows regulatory guidelines reporting confidence intervals and rigorous holdout metrics.",
+     "after": "QSVM holdout MCC is comparable to the classical models. Its 5-fold CV MCC is lower than RandomForest's, but the difference is not statistically significant (p = 0.112)."
+    }
+   ],
+   "only_text_fields_changed": true
+  },
+  "guard": {
+   "withtime": {
+    "variant": "withtime",
+    "protocol": "5-fold stratified x 3 repeats = 15 paired splits on the 239 training patients (seed 1)",
+    "table": [
+     {
+      "model": "qsvm_zz_x1.0",
+      "kind": "quantum",
+      "mcc_mean": 0.5377,
+      "mcc_ci": [
+       0.4459,
+       0.6295
+      ],
+      "auroc_mean": 0.8716,
+      "auroc_ci": [
+       0.8447,
+       0.8986
+      ]
+     },
+     {
+      "model": "qsvm_zz_x0.3",
+      "kind": "quantum",
+      "mcc_mean": 0.5999,
+      "mcc_ci": [
+       0.5378,
+       0.6621
+      ],
+      "auroc_mean": 0.8744,
+      "auroc_ci": [
+       0.8449,
+       0.9038
+      ]
+     },
+     {
+      "model": "qsvm_angle_x1.0",
+      "kind": "quantum",
+      "mcc_mean": 0.5707,
+      "mcc_ci": [
+       0.5183,
+       0.623
+      ],
+      "auroc_mean": 0.8713,
+      "auroc_ci": [
+       0.842,
+       0.9006
+      ]
+     },
+     {
+      "model": "logistic_regression",
+      "kind": "classical",
+      "mcc_mean": 0.5646,
+      "mcc_ci": [
+       0.5087,
+       0.6205
+      ],
+      "auroc_mean": 0.8628,
+      "auroc_ci": [
+       0.8317,
+       0.8938
+      ]
+     },
+     {
+      "model": "random_forest",
+      "kind": "classical",
+      "mcc_mean": 0.581,
+      "mcc_ci": [
+       0.5272,
+       0.6348
+      ],
+      "auroc_mean": 0.9042,
+      "auroc_ci": [
+       0.8909,
+       0.9175
+      ]
+     },
+     {
+      "model": "gradient_boosting",
+      "kind": "classical",
+      "mcc_mean": 0.5673,
+      "mcc_ci": [
+       0.5077,
+       0.6268
+      ],
+      "auroc_mean": 0.8695,
+      "auroc_ci": [
+       0.8478,
+       0.8913
+      ]
+     },
+     {
+      "model": "svm_rbf",
+      "kind": "classical",
+      "mcc_mean": 0.5728,
+      "mcc_ci": [
+       0.5055,
+       0.64
+      ],
+      "auroc_mean": 0.8746,
+      "auroc_ci": [
+       0.8438,
+       0.9055
+      ]
+     },
+     {
+      "model": "xgboost",
+      "kind": "classical",
+      "mcc_mean": 0.599,
+      "mcc_ci": [
+       0.5514,
+       0.6467
+      ],
+      "auroc_mean": 0.8839,
+      "auroc_ci": [
+       0.8603,
+       0.9075
+      ]
+     }
+    ],
+    "verdicts": {
+     "mcc": {
+      "category": "NO_DIFFERENCE",
+      "metric_used": "mcc",
+      "best_quantum_model": "qsvm_zz_x0.3",
+      "best_classical_model": "xgboost",
+      "quantum_score": 0.5999224369710714,
+      "classical_score": 0.5990470866791745,
+      "delta": 0.0008753502918968925,
+      "ci_lower": -0.061073407897171646,
+      "ci_upper": 0.06527113625582594,
+      "p_value": 1.0,
+      "configs_tried": 3,
+      "sentence": "Observed MCC delta of +0.0009 between qsvm_zz_x0.3 (0.5999) and xgboost (0.5990) with bootstrap 95% CI [-0.0611, +0.0653] and Nadeau-Bengio corrected p = 1.0000 across 3 quantum configurations does not reject the null hypothesis at threshold 0.02. No conclusive advantage demonstrated."
+     },
+     "auroc": {
+      "category": "NO_DIFFERENCE",
+      "metric_used": "auroc",
+      "best_quantum_model": "qsvm_zz_x0.3",
+      "best_classical_model": "random_forest",
+      "quantum_score": 0.8743502735690235,
+      "classical_score": 0.9042324284511785,
+      "delta": -0.029882154882154954,
+      "ci_lower": -0.05191192853009262,
+      "ci_upper": -0.005220492687289588,
+      "p_value": 0.5836205719582992,
+      "configs_tried": 3,
+      "sentence": "Observed AUROC delta of -0.0299 between qsvm_zz_x0.3 (0.8744) and random_forest (0.9042) with bootstrap 95% CI [-0.0519, -0.0052] and Nadeau-Bengio corrected p = 0.5836 across 3 quantum configurations does not reject the null hypothesis at threshold 0.02. No conclusive advantage demonstrated."
+     }
+    }
+   },
+   "notime": {
+    "variant": "notime",
+    "protocol": "5-fold stratified x 3 repeats = 15 paired splits on the 239 training patients (seed 1)",
+    "table": [
+     {
+      "model": "qsvm_zz_x1.0",
+      "kind": "quantum",
+      "mcc_mean": 0.4137,
+      "mcc_ci": [
+       0.3409,
+       0.4865
+      ],
+      "auroc_mean": 0.7623,
+      "auroc_ci": [
+       0.7171,
+       0.8076
+      ]
+     },
+     {
+      "model": "qsvm_zz_x0.3",
+      "kind": "quantum",
+      "mcc_mean": 0.3961,
+      "mcc_ci": [
+       0.3357,
+       0.4566
+      ],
+      "auroc_mean": 0.7906,
+      "auroc_ci": [
+       0.7492,
+       0.832
+      ]
+     },
+     {
+      "model": "qsvm_angle_x1.0",
+      "kind": "quantum",
+      "mcc_mean": 0.0337,
+      "mcc_ci": [
+       -0.0216,
+       0.0889
+      ],
+      "auroc_mean": 0.7861,
+      "auroc_ci": [
+       0.7454,
+       0.8269
+      ]
+     },
+     {
+      "model": "logistic_regression",
+      "kind": "classical",
+      "mcc_mean": 0.3359,
+      "mcc_ci": [
+       0.2614,
+       0.4104
+      ],
+      "auroc_mean": 0.7761,
+      "auroc_ci": [
+       0.7354,
+       0.8167
+      ]
+     },
+     {
+      "model": "random_forest",
+      "kind": "classical",
+      "mcc_mean": 0.4165,
+      "mcc_ci": [
+       0.3389,
+       0.4942
+      ],
+      "auroc_mean": 0.7871,
+      "auroc_ci": [
+       0.7479,
+       0.8263
+      ]
+     },
+     {
+      "model": "gradient_boosting",
+      "kind": "classical",
+      "mcc_mean": 0.3824,
+      "mcc_ci": [
+       0.3034,
+       0.4614
+      ],
+      "auroc_mean": 0.7613,
+      "auroc_ci": [
+       0.7203,
+       0.8023
+      ]
+     },
+     {
+      "model": "svm_rbf",
+      "kind": "classical",
+      "mcc_mean": 0.3776,
+      "mcc_ci": [
+       0.3066,
+       0.4486
+      ],
+      "auroc_mean": 0.7859,
+      "auroc_ci": [
+       0.744,
+       0.8278
+      ]
+     },
+     {
+      "model": "xgboost",
+      "kind": "classical",
+      "mcc_mean": 0.3768,
+      "mcc_ci": [
+       0.3214,
+       0.4323
+      ],
+      "auroc_mean": 0.7618,
+      "auroc_ci": [
+       0.7271,
+       0.7964
+      ]
+     }
+    ],
+    "verdicts": {
+     "mcc": {
+      "category": "NO_DIFFERENCE",
+      "metric_used": "mcc",
+      "best_quantum_model": "qsvm_zz_x1.0",
+      "best_classical_model": "random_forest",
+      "quantum_score": 0.4137335575635071,
+      "classical_score": 0.4165477310894062,
+      "delta": -0.0028141735258990774,
+      "ci_lower": -0.04597955432091546,
+      "ci_upper": 0.04263293725368442,
+      "p_value": 1.0,
+      "configs_tried": 3,
+      "sentence": "Observed MCC delta of -0.0028 between qsvm_zz_x1.0 (0.4137) and random_forest (0.4165) with bootstrap 95% CI [-0.0460, +0.0426] and Nadeau-Bengio corrected p = 1.0000 across 3 quantum configurations does not reject the null hypothesis at threshold 0.02. No conclusive advantage demonstrated."
+     },
+     "auroc": {
+      "category": "NO_DIFFERENCE",
+      "metric_used": "auroc",
+      "best_quantum_model": "qsvm_zz_x0.3",
+      "best_classical_model": "random_forest",
+      "quantum_score": 0.7906076388888889,
+      "classical_score": 0.78709319760101,
+      "delta": 0.003514441287878811,
+      "ci_lower": -0.017335713909932694,
+      "ci_upper": 0.0276678997001262,
+      "p_value": 1.0,
+      "configs_tried": 3,
+      "sentence": "Observed AUROC delta of +0.0035 between qsvm_zz_x0.3 (0.7906) and random_forest (0.7871) with bootstrap 95% CI [-0.0173, +0.0277] and Nadeau-Bengio corrected p = 1.0000 across 3 quantum configurations does not reject the null hypothesis at threshold 0.02. No conclusive advantage demonstrated."
+     }
+    }
+   }
+  },
+  "claims": [
+   {
+    "id": "C-E1",
+    "claim": "E1 (Bloq, ZZ default): MCC 0.0000; 0 of 48 patients predicted to die.",
+    "source": "data/morphos/bloq_outputs/E1_notime_config.json",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "MCC recomputed from the platform confusion matrix [[33, 0], [15, 0]]: 0.0000; accuracy 0.6875.",
+    "evidence": "Arithmetic on the raw platform output. This checks the report's reading of the file, not the platform's run."
+   },
+   {
+    "id": "C-E2",
+    "claim": "E2 (Bloq, ZZ default): MCC 0.0116; 3 of 48 patients predicted to die.",
+    "source": "data/morphos/bloq_outputs/E2_withtime_config.json",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "MCC recomputed from the platform confusion matrix [[31, 2], [14, 1]]: 0.0116; accuracy 0.6667.",
+    "evidence": "Arithmetic on the raw platform output. This checks the report's reading of the file, not the platform's run."
+   },
+   {
+    "id": "C-SPLIT",
+    "claim": "Stratified split: 239 training and 60 test patients with matching death rates.",
+    "source": "data/morphos/original/*.csv",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "239 train (death rate 0.322), 60 test (death rate 0.317, 19 deaths).",
+    "evidence": "Counted from the bundled CSVs."
+   },
+   {
+    "id": "C-RANGE",
+    "claim": "Test rows fall slightly outside [0, 1] because the scaler only saw training rows.",
+    "source": "data/morphos/original/*_test.csv",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "Test feature minimum -0.094, maximum 1.047. The study clips test rows to [0, 1] before encoding.",
+    "evidence": "Min and max over both test files."
+   },
+   {
+    "id": "C-E3",
+    "claim": "E3: wider input range and deeper circuits hurt the ZZ kernel (8 rows of the report table).",
+    "source": "sweep1_depth_scale.py, re-run",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "8 of 8 rows match to the report's two decimals. Example: withtime range 0 to 1 depth 1 gives CV 0.5190 and test 0.6716.",
+    "evidence": "The report calls these approximate. They are now exact."
+   },
+   {
+    "id": "C-E4",
+    "claim": "E4: shrinking the input range to 0.3 helped the with-time data (CV 0.60, test 0.81).",
+    "source": "sweep2_preprocessing.py, re-run",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "4 of 4 cells match. With time: range 0.3 CV 0.5999 / test 0.8055; range 1.0 CV 0.5377 / test 0.6716.",
+    "evidence": "Min-max rows only."
+   },
+   {
+    "id": "C-SELECT",
+    "claim": "The range 0.3 was chosen on cross-validation, not on the holdout.",
+    "source": "docs/MORPHOS_REPORT_AND_PRD.md, section on decisions",
+    "status": "supported",
+    "status_label": "Supported by local analysis",
+    "recomputed": "Across five ranges (with time) CV MCC varies by 0.076 but holdout MCC varies by 0.162.",
+    "evidence": "Holdout MCC on 60 patients is noisy, so choosing a range by holdout would mostly choose noise."
+   },
+   {
+    "id": "C-E5-HOLD",
+    "claim": "E5 QSVM holdout: MCC 0.746, accuracy 0.883, recall 0.895, confusion [[36, 5], [2, 17]].",
+    "source": "data/morphos/submissions/SUBMITTED_corrected.json",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "Independent angle-embedding kernel gives MCC 0.745976, accuracy 0.8833, confusion [[36, 5], [2, 17]]. ROC-AUC 0.9345 against 0.9332 submitted (score function differs).",
+    "evidence": "All five class-prediction metrics match to 9 decimals. Only the score-based ROC-AUC differs."
+   },
+   {
+    "id": "C-E5-CV",
+    "claim": "E5 QSVM 5-fold MCCs: 0.318, 0.359, 0.514, 0.633, 0.711 (mean 0.507).",
+    "source": "data/morphos/submissions/SUBMITTED_corrected.json",
+    "status": "partly",
+    "status_label": "Partly reproduced",
+    "recomputed": "4 of 5 folds match. Mean 0.5036 against 0.5068. Fold 4: 0.6167 against 0.6325.",
+    "evidence": "Same folds (5-fold, shuffled, seed 42). The fold 4 gap is 0.016 MCC and its cause is not known."
+   },
+   {
+    "id": "C-E5-MAP",
+    "claim": "The submitted kernel is an angle-embedding fidelity kernel with no entanglement, not a ZZ feature map.",
+    "source": "metadata.feature_map, corrected before submission",
+    "status": "supported",
+    "status_label": "Supported by local analysis",
+    "recomputed": "The product-state kernel reproduces the submitted holdout exactly (MCC 0.746). A true ZZ kernel at the same range gives holdout MCC 0.672.",
+    "evidence": "Two kernels, one match. The platform's own export called it ZZFeatureMap, which the corrected file no longer does."
+   },
+   {
+    "id": "C-E5-LR",
+    "claim": "In E5 logistic regression predicted the majority class in every fold (CV MCC 0.000, holdout 0.191).",
+    "source": "data/morphos/submissions/SUBMITTED_corrected.json",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "Reproduced when the inputs are multiplied by 0.3: CV 0.0000, holdout 0.1912. On the full 0 to 1 range the same model gets CV 0.5483 and holdout 0.7460, which equals the QSVM's holdout MCC.",
+    "evidence": "Inferred recipe. The collapse is a regularisation effect of shrunken inputs, so beating this baseline says little."
+   },
+   {
+    "id": "C-E5-SVM",
+    "claim": "E5 SVM-RBF baseline: CV MCC 0.525, holdout 0.779.",
+    "source": "data/morphos/submissions/SUBMITTED_corrected.json",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "CV 0.5250, holdout 0.7785.",
+    "evidence": "scikit-learn SVC defaults on the same folds."
+   },
+   {
+    "id": "C-E5-TREES",
+    "claim": "E5 RandomForest, GradientBoosting and XGBoost baseline numbers.",
+    "source": "data/morphos/submissions/SUBMITTED_corrected.json",
+    "status": "not_reproduced",
+    "status_label": "Not reproduced",
+    "recomputed": "RandomForest: CV 0.6074 vs 0.6291, holdout 0.6806 vs 0.7785; GradientBoosting: CV 0.5876 vs 0.5752, holdout 0.7328 vs 0.7785; XGBoost: CV 0.5775 vs 0.6112, holdout 0.6321 vs 0.6559",
+    "evidence": "Default settings and seed 42 do not reproduce them. The platform's tree settings are not visible to us."
+   },
+   {
+    "id": "C-E5-PAIR",
+    "claim": "QSVM vs RandomForest paired on E5 folds: delta MCC -0.122, 95% CI [-0.290, 0.045], p = 0.112.",
+    "source": "stored fold scores in SUBMITTED_corrected.json",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "Delta -0.1223, CI [-0.2895, +0.0449], t -2.031, p 0.1121.",
+    "evidence": "Plain paired t-test on 5 folds. The guard's corrected test (below) is stricter."
+   },
+   {
+    "id": "C-E6",
+    "claim": "E6 local ZZ benchmark (not submitted): QSVM CV MCC 0.569, holdout 0.806.",
+    "source": "data/morphos/submissions/E6_local_zz_NOT_submitted.json",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "Fresh run against the stored file: 0 differing values (timing excluded). QSVM CV 0.5688, holdout 0.8055.",
+    "evidence": "Every metric and fold score identical."
+   },
+   {
+    "id": "C-DIFF",
+    "claim": "The submitted file differs from the original Bloq-pipeline export in three text fields only.",
+    "source": "SUBMITTED_corrected.json vs E5_original_export.json",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "recomputed": "3 fields differ: /metadata/leakage_audit_note, /metadata/quantum_configuration/feature_map, /statistical_comparison/verdict. Every number is identical.",
+    "evidence": "Programmatic recursive diff of the two JSON files."
+   },
+   {
+    "id": "C-LEAK",
+    "claim": "Follow-up time carries outcome information, so with-time scores are optimistic for a deployable model.",
+    "source": "docs/MORPHOS_REPORT_AND_PRD.md, risks; no no-time comparison was in the submitted file",
+    "status": "supported",
+    "status_label": "Supported by local analysis",
+    "recomputed": "`time` alone has AUROC 0.812, higher than any other single feature (best other: serum_creatinine 0.753). Swapping it for serum_sodium changes CV MCC by: QSVM +0.204, SVM-RBF +0.195, LogisticRegression +0.229, RandomForest +0.164.",
+    "evidence": "Local repeated-CV run, same 15 splits for both feature sets. Not run on Bloq."
+   },
+   {
+    "id": "C-GAP",
+    "claim": "The Bloq E1 and E2 collapse is explained by kernel concentration at large input ranges (report, E3).",
+    "source": "docs/MORPHOS_REPORT_AND_PRD.md, E3 finding",
+    "status": "hypothesis",
+    "status_label": "Hypothesis, unverified",
+    "recomputed": "Local ZZ kernels on 0 to 1 inputs never predicted 'no deaths' in 300 random 191/48 splits (no-time: 0, with-time: 0), and MCC was at most 0.05 in 0.3% of no-time splits. Local collapse appears only at range 0 to 2pi.",
+    "evidence": "Split luck does not explain E1 and E2. Whether the platform rescales inputs internally cannot be checked from outside."
+   },
+   {
+    "id": "C-NOISE",
+    "claim": "On a 60-patient holdout, one or two patients move MCC noticeably.",
+    "source": "holdout confusion matrix of the E5 QSVM",
+    "status": "supported",
+    "status_label": "Supported by local analysis",
+    "recomputed": "Baseline 0.746. One prediction flipped: 0.702 to 0.790. Two flipped: 0.659 to 0.834.",
+    "evidence": "Computed from the four confusion-matrix counts."
+   },
+   {
+    "id": "C-PLATFORM",
+    "claim": "E5 was produced by the Bloq platform pipeline.",
+    "source": "platform account, outside this repository",
+    "status": "not_verifiable",
+    "status_label": "Not verifiable here",
+    "recomputed": "No platform signature or run identifier in the file can be checked from outside Bloq.",
+    "evidence": "This tool signs and hashes what you hand it. It cannot attest to where a number came from. Keep the platform screenshots and the experiment ids."
+   }
+  ],
+  "ledger": [
+   {
+    "id": "E1",
+    "what": "Bloq platform, QSVM with the default ZZ feature map, 4 qubits, depth 1",
+    "where": "Bloq",
+    "data": "no time (serum sodium)",
+    "cv_mcc": null,
+    "holdout_mcc": 0,
+    "eval_n": 48,
+    "submitted": "no",
+    "claim_ids": [
+     "C-E1",
+     "C-GAP"
+    ],
+    "status": "partly",
+    "status_label": "Partly reproduced",
+    "provenance": "Run on Bloq, not verifiable from outside"
+   },
+   {
+    "id": "E2",
+    "what": "Same platform settings, with follow-up time",
+    "where": "Bloq",
+    "data": "with time",
+    "cv_mcc": null,
+    "holdout_mcc": 0.0116,
+    "eval_n": 48,
+    "submitted": "no",
+    "claim_ids": [
+     "C-E2",
+     "C-GAP"
+    ],
+    "status": "partly",
+    "status_label": "Partly reproduced",
+    "provenance": "Run on Bloq, not verifiable from outside"
+   },
+   {
+    "id": "E3",
+    "what": "Local sweep over depth and input range, true ZZ kernel",
+    "where": "Local",
+    "data": "both",
+    "cv_mcc": null,
+    "holdout_mcc": null,
+    "eval_n": 239,
+    "submitted": "no",
+    "claim_ids": [
+     "C-E3"
+    ],
+    "span": "CV MCC -0.01 to 0.52 (with time)",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "provenance": "Local, re-runnable here"
+   },
+   {
+    "id": "E4",
+    "what": "Local sweep over preprocessing and range, repeated 5-fold CV",
+    "where": "Local",
+    "data": "both",
+    "cv_mcc": 0.5999,
+    "holdout_mcc": 0.8055,
+    "eval_n": 239,
+    "submitted": "no",
+    "claim_ids": [
+     "C-E4",
+     "C-SELECT"
+    ],
+    "span": "best with-time range 0.3",
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "provenance": "Local, re-runnable here"
+   },
+   {
+    "id": "E5",
+    "what": "Bloq pipeline export: angle-embedding QSVM and five classical models",
+    "where": "Bloq pipeline",
+    "data": "with time",
+    "cv_mcc": 0.5068,
+    "holdout_mcc": 0.746,
+    "eval_n": 60,
+    "submitted": "yes",
+    "claim_ids": [
+     "C-E5-HOLD",
+     "C-E5-CV",
+     "C-E5-MAP",
+     "C-E5-LR",
+     "C-E5-SVM",
+     "C-E5-TREES",
+     "C-E5-PAIR",
+     "C-PLATFORM"
+    ],
+    "status": "partly",
+    "status_label": "Partly reproduced",
+    "provenance": "Run on Bloq, not verifiable from outside"
+   },
+   {
+    "id": "E6",
+    "what": "Local true-ZZ QSVM and five classical models on identical folds",
+    "where": "Local",
+    "data": "with time",
+    "cv_mcc": 0.5688,
+    "holdout_mcc": 0.8055,
+    "eval_n": 60,
+    "submitted": "no",
+    "claim_ids": [
+     "C-E6"
+    ],
+    "status": "reproduced",
+    "status_label": "Reproduced",
+    "provenance": "Local, re-runnable here"
+   }
+  ],
+  "bloq": {
+   "E1": {
+    "experiment_type": "ml",
+    "title": "qneuro_hf_qsvm_notime",
+    "algorithm": "QSVM",
+    "parameters": {
+     "No. of Qubits": 4,
+     "Circuit Depth": 1,
+     "Device": {
+      "name": "aer_simulator",
+      "provider": "ibm",
+      "isSimulator": true,
+      "method": "automatic"
+     },
+     "Feature Map": {
+      "isDefault": true,
+      "name": "ZZ Feature Map"
+     },
+     "Use NumPy Inner Product": true
+    },
+    "output": {
+     "0": {
+      "precision": 0.6875,
+      "recall": 1,
+      "f1-score": 0.8148148148148148,
+      "support": 33
+     },
+     "1": {
+      "precision": 0,
+      "recall": 0,
+      "f1-score": 0,
+      "support": 15
+     },
+     "logs": [
+      {
+       "timestamp": "2026-10-13T11:11:50.299857+00:00",
+       "type": "queued",
+       "message": "Experiment queued"
+      },
+      {
+       "timestamp": "2026-10-13T11:11:57.124590+00:00",
+       "type": "running",
+       "message": "Experiment running"
+      },
+      {
+       "timestamp": "2026-10-13T11:12:01.494120+00:00",
+       "type": "completed",
+       "message": "Experiment completed"
+      }
+     ],
+     "accuracy": 0.6875,
+     "macro avg": {
+      "precision": 0.34375,
+      "recall": 0.5,
+      "f1-score": 0.4074074074074074,
+      "support": 48
+     },
+     "weighted avg": {
+      "precision": 0.47265625,
+      "recall": 0.6875,
+      "f1-score": 0.5601851851851851,
+      "support": 48
+     },
+     "confusion_matrix": [
+      [
+       33,
+       0
+      ],
+      [
+       15,
+       0
+      ]
+     ],
+     "mcc": 0
+    },
+    "dataset": "hf_notime_train.csv",
+    "size": 239,
+    "trainTestRatio": 80,
+    "selectedFeatures": [
+     "ejection_fraction",
+     "serum_creatinine",
+     "age",
+     "serum_sodium"
+    ],
+    "targetFeature": "death_event",
+    "task_type": "Binary Classification"
+   },
+   "E2": {
+    "experiment_type": "ml",
+    "title": "qneuro_hf_qsvm_notime",
+    "algorithm": "QSVM",
+    "parameters": {
+     "No. of Qubits": 4,
+     "Circuit Depth": 1,
+     "Device": {
+      "name": "aer_simulator",
+      "provider": "ibm",
+      "isSimulator": true,
+      "method": "automatic"
+     },
+     "Feature Map": {
+      "isDefault": true,
+      "name": "ZZ Feature Map"
+     },
+     "Use NumPy Inner Product": true
+    },
+    "output": {
+     "0": {
+      "precision": 0.6888888888888889,
+      "recall": 0.9393939393939394,
+      "f1-score": 0.7948717948717948,
+      "support": 33
+     },
+     "1": {
+      "precision": 0.3333333333333333,
+      "recall": 0.06666666666666667,
+      "f1-score": 0.1111111111111111,
+      "support": 15
+     },
+     "logs": [
+      {
+       "timestamp": "2026-10-13T11:13:28.077504+00:00",
+       "type": "queued",
+       "message": "Experiment queued"
+      },
+      {
+       "timestamp": "2026-10-13T11:13:34.925856+00:00",
+       "type": "running",
+       "message": "Experiment running"
+      },
+      {
+       "timestamp": "2026-10-13T11:13:39.161179+00:00",
+       "type": "completed",
+       "message": "Experiment completed"
+      }
+     ],
+     "accuracy": 0.6666666666666666,
+     "macro avg": {
+      "precision": 0.5111111111111111,
+      "recall": 0.503030303030303,
+      "f1-score": 0.45299145299145294,
+      "support": 48
+     },
+     "weighted avg": {
+      "precision": 0.5777777777777778,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.5811965811965812,
+      "support": 48
+     },
+     "confusion_matrix": [
+      [
+       31,
+       2
+      ],
+      [
+       14,
+       1
+      ]
+     ],
+     "mcc": 0.011605177063713189
+    },
+    "dataset": "hf_withtime_train.csv",
+    "size": 239,
+    "trainTestRatio": 80,
+    "selectedFeatures": [
+     "ejection_fraction",
+     "serum_creatinine",
+     "age",
+     "time"
+    ],
+    "targetFeature": "death_event",
+    "task_type": "Binary Classification"
+   }
+  },
+  "submitted_summary": {
+   "QSVM (Quantum Kernel)": {
+    "cv_5fold": {
+     "mcc_mean": 0.5068,
+     "mcc_ci_95": [
+      0.2963,
+      0.7173
+     ],
+     "mcc_folds": [
+      0.3182,
+      0.3586,
+      0.5139,
+      0.6325,
+      0.7108
+     ],
+     "accuracy_mean": 0.7953,
+     "accuracy_folds": [
+      0.7292,
+      0.75,
+      0.7917,
+      0.8333,
+      0.8723
+     ],
+     "f1_mean": 0.576,
+     "roc_auc_mean": 0.8703,
+     "mean_train_time_sec": 0.0096
+    },
+    "holdout_test": {
+     "mcc": 0.7459756021776387,
+     "accuracy": 0.8833333333333333,
+     "f1": 0.8292682926829268,
+     "precision": 0.7727272727272727,
+     "recall": 0.8947368421052632,
+     "roc_auc": 0.9332477535301669,
+     "train_time_seconds": 0.010311200021533296
+    }
+   },
+   "LogisticRegression": {
+    "cv_5fold": {
+     "mcc_mean": 0.0,
+     "mcc_ci_95": [
+      0.0,
+      0.0
+     ],
+     "mcc_folds": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "accuracy_mean": 0.6778,
+     "accuracy_folds": [
+      0.6875,
+      0.6875,
+      0.6667,
+      0.6667,
+      0.6809
+     ],
+     "f1_mean": 0.0,
+     "roc_auc_mean": 0.8528,
+     "mean_train_time_sec": 0.0057
+    },
+    "holdout_test": {
+     "mcc": 0.19124457394948602,
+     "accuracy": 0.7,
+     "f1": 0.1,
+     "precision": 1.0,
+     "recall": 0.05263157894736842,
+     "roc_auc": 0.9370988446726572,
+     "train_time_seconds": 0.004356299992650747
+    }
+   },
+   "RandomForest": {
+    "cv_5fold": {
+     "mcc_mean": 0.6291,
+     "mcc_ci_95": [
+      0.4513,
+      0.8069
+     ],
+     "mcc_folds": [
+      0.4411,
+      0.7091,
+      0.5312,
+      0.663,
+      0.8011
+     ],
+     "accuracy_mean": 0.8413,
+     "accuracy_folds": [
+      0.7708,
+      0.875,
+      0.7917,
+      0.8542,
+      0.9149
+     ],
+     "f1_mean": 0.7392,
+     "roc_auc_mean": 0.924,
+     "mean_train_time_sec": 0.1384
+    },
+    "holdout_test": {
+     "mcc": 0.7784624283452708,
+     "accuracy": 0.8833333333333333,
+     "f1": 0.8444444444444444,
+     "precision": 0.7307692307692307,
+     "recall": 1.0,
+     "roc_auc": 0.9216944801026957,
+     "train_time_seconds": 0.1108249000099022
+    }
+   },
+   "GradientBoosting": {
+    "cv_5fold": {
+     "mcc_mean": 0.5752,
+     "mcc_ci_95": [
+      0.4601,
+      0.6904
+     ],
+     "mcc_folds": [
+      0.4411,
+      0.5721,
+      0.6025,
+      0.5608,
+      0.6996
+     ],
+     "accuracy_mean": 0.8161,
+     "accuracy_folds": [
+      0.7708,
+      0.8125,
+      0.8125,
+      0.8125,
+      0.8723
+     ],
+     "f1_mean": 0.6962,
+     "roc_auc_mean": 0.8953,
+     "mean_train_time_sec": 0.053
+    },
+    "holdout_test": {
+     "mcc": 0.7784624283452708,
+     "accuracy": 0.8833333333333333,
+     "f1": 0.8444444444444444,
+     "precision": 0.7307692307692307,
+     "recall": 1.0,
+     "roc_auc": 0.9319640564826701,
+     "train_time_seconds": 0.04166119999717921
+    }
+   },
+   "SVM-RBF": {
+    "cv_5fold": {
+     "mcc_mean": 0.525,
+     "mcc_ci_95": [
+      0.334,
+      0.7161
+     ],
+     "mcc_folds": [
+      0.3373,
+      0.6487,
+      0.5312,
+      0.4082,
+      0.6996
+     ],
+     "accuracy_mean": 0.7995,
+     "accuracy_folds": [
+      0.7292,
+      0.8542,
+      0.7917,
+      0.75,
+      0.8723
+     ],
+     "f1_mean": 0.6575,
+     "roc_auc_mean": 0.8824,
+     "mean_train_time_sec": 0.0065
+    },
+    "holdout_test": {
+     "mcc": 0.7784624283452708,
+     "accuracy": 0.8833333333333333,
+     "f1": 0.8444444444444444,
+     "precision": 0.7307692307692307,
+     "recall": 1.0,
+     "roc_auc": 0.9139922978177151,
+     "train_time_seconds": 0.0070869000046513975
+    }
+   },
+   "XGBoost": {
+    "cv_5fold": {
+     "mcc_mean": 0.6112,
+     "mcc_ci_95": [
+      0.5163,
+      0.706
+     ],
+     "mcc_folds": [
+      0.4994,
+      0.5919,
+      0.6025,
+      0.663,
+      0.6991
+     ],
+     "accuracy_mean": 0.8286,
+     "accuracy_folds": [
+      0.7917,
+      0.8125,
+      0.8125,
+      0.8542,
+      0.8723
+     ],
+     "f1_mean": 0.7315,
+     "roc_auc_mean": 0.8891,
+     "mean_train_time_sec": 0.0242
+    },
+    "holdout_test": {
+     "mcc": 0.6559304988834465,
+     "accuracy": 0.8166666666666667,
+     "f1": 0.7659574468085106,
+     "precision": 0.6428571428571429,
+     "recall": 0.9473684210526315,
+     "roc_auc": 0.8947368421052632,
+     "train_time_seconds": 0.0233946000225842
+    }
+   }
+  }
+ },
+ "study_sha256": "872b2dcc8c8c940504730b2c326fae7367fd9f020c61855a10a75f963bc8c66f",
+ "signature_hex": "9ca2057bbd6896205e5dc8b54b61acb6780312cda1b7d565f47651ce9d15018d5a3da9f6ee3340fdc09c45b64929cdcb43c36a253478f1cf8aa3524f0d6e165541f9d747847be8afb7b15e64da5e30e93d674a968a4937c7d1abba119fdcc2b9a08345ec639e1eace19b9fe314cf9dc41980de363fca32c5c3f9af43bb6e1463f9166d4e696a90987c7b83eb24d5636b9d94aa34a78b2c58ba8bdb97b9451b488ef7910b7f417c989225d41bb29b08b434c33487b83aec93d32277e1fbfe8822b1ef033da32de075ff9e3733f4eab4dec86df2e0286c16ae846d3503310190e43c34d446dd74b1695b0b9c4e2adae7b9a74c9bb5a069bb2373e986876276c960ac35443cd903adaa169b3ae0ad8bf95851d948813ce63770c633e2dae46c7a9df7cf0ec25a7bbf0fc23a60e87f0e1f95d63d25beb747da42817845032018b2ff78119562b278865b6c671af4c8ae94922efe439f95a5d855b11af5198a2ba5a66f37d0ba7ef165dbec2a60967d1be471ce03a2c7b6091b8dbeb006c6923f0ac0a3056bd5a93d4e1e939e4afdd0a146c0bd434c3529523050dc48ca593bcce43f62de4ba3266a50f39b22e2d30bee4cae68daed53adb3ba1389af5250b5be4d2e91cc43aca1ed4f80b8490dc24bd9444f557ea1b5ab82a0c3118b3dc5338841160117b056b14be6333c215f6297bd0119155ac63fbfa87810061144d7d19f116adb6454b45e17e00472c5e5fb55cfbc3bdf4bbb4b4281a9c3b6e2b877f43683ab897294da9fe0a91adc93d0fac4c20b7cd6c0e410818faa849aa362d1d85ec4cea768b0ab2a536e71c248cb057bd3aea64353ba0ff55aca0eb7a1bde97a5f889724d77823ea2268397382bca858cb4607b9994d90948dbb946d9ced5e51aec88ee5e2847e98c62c9e22d9c1f006f372c25be52c5ba025db57048c72a26e679488ccefe8125d38ab5b00da97bd0bd8b14aa006eb8a5747eb6c008819a20eea06bc59a6077b882833935db18c45d52958f20031f8f1e21104cd6b7abf979521db8ce38f19bdd3fc7b6591e3e8930f9e5a25316a74ebecf7c4d1318cfb4098beb129e5e7a655302032e20343d49a9191331f7224e501d24d056d6d38331559d16ac45638deac1cab4d7a471c63c49feffc1d607bccb358a8dc6da7a796249ed06f22c911e2d46a3aeb0478757b37c1dab90272e122a47e22f7e51ad6b4471ed94d751c4bef8bb5c075c6dd4a6a072e92a96778e6be4fc962233a90ae19e0a035a9005ce797386b6a24c3bf877f7ab6db22463e26c9249bf12230c952ccff0c991290129a8df32b4251215a7200d962120808b786ba4c9cce298aa450fa6c00ceab33a437724c30fbd0d7e2b04a29e8bb993386bf62f5e13e0e212943d38b7c704885387599a5c01fae387ddb5ae0c60619e6bc04689c878ac7c2ccaa9976737744fde99894533de911902bdcd67b9172741352dd79071c4c8377294bb66ab324a1c53e4818ffae4aa338fd446b986786e3a60989698c091129f219f2a87c6d99e6f8809f9bccc9133ec0af4e62c3071f54bb2197e717798c331c1a9ca6aae5b0c5a8363ebcda6c7b049a1a6a2fb78d0ed6ced292afc342d41c14abd2ea19cc35fbcc91945c59f1c450394ba199c3b514b7d0ab07a731f5cedbfdd9f05298f686e3efc969a733a737d26859948598066f226fea834162b7519433d6d415b02251bb73f4c5792cd5200cc0cf8f703bd4531cdac7c20326f33c4f85940b2948913a594081c88fbe9e4ac91f8c3b8ebded00c6c94321a324fa2be5012f2e81cd8a035bd69dcd0e2dda5c15e4b5c6b23198b6f1d65d16a24b9ad3025498189c0d9815b17f3e70934acd5a38ed52520f3058e5e5a2830c15f6d5b6c7ed08408a864c4883eb4635746c2dc1e7cb4fe92cc506ed36d2f5dc6da82f5a0483ef28b1e9bf5cf4a827a80aa750d47de36889f2d125a08dd68ddeb872d5f4036270ef721a325463790ff0d32b5f4e53876b22b77207d5770884c870f1d0ad4c965d070c52768f04bd20171d95bc71bada2a1ae67c31a6994926f76dadfc85f313454eea5fb019d8325629fbb2f68c80f3484421ce66d7d279a3a52f12eadfe9cd549438a229daa0325ce3c09bbd4eb447fcecbd41c72851a39d16583341fc2744538fe6c5d5118de68cebfb95d9cddad52a1201c378c3f5b7f9289317acdb0f187a5b635a199352f200dc2b19a51cf7891960252187b78617661fed3a3c70d98cc88ea48c84ca6c9492873cb389108bc593a4f063cc5cb50db7b28aa1f03101edbaba90fcca1c5739bc4ae1a8225e535d586404457ff1d6a4c78cc00ab7ae15bfb4af453895250494a14478da7a6311f49864072aa9bc539753f8d2135bc6ea9e94d984a88941a257834475266e961c4786b147d4e6307dfe5bff0c67b17d944f8f1a45bed18dc6fe57b5f3037013e6741bec6ef85cf0c9fe9033e565dd3ef6848aa5aa2dbc3fc93dedb55759d458f5aa95c110ca15cad1522d399de09ec838c2ffb200e7aee8a724ae912b0d5420828ba113a5ac3367710303f6384080e737cbbdd6635695f3ab777ec4d8fd0f55ba79f0842d2d76d729941d2b527b9e12fe6c195f8171eba2db8260bd22429026c9a869842a8bd6ee383e4216b458a02bcfc52d3b22d3aaeb3970dd1cde6c3aa31f437af963a3aa6113a5cc00314a5a96ead2ed09f0d93df05b8698cb0b262f76e060bd0d6434a6e5ee6d15e18deec6262cb34a080d076c71db1b6d8f7d07e7d34771bdea03f382310680fe850c27e621d21bbb80953bb94d6ae7f96311537842853434cda53f77d024b9dd91ae8468e026b2ebf584ed6659d6ef894b33079891c7731c08571969fea75edc5973d2ee817a124660cf00215b7176d6eea5f3d85e932af76de18602b08b1314f7202f979f97c9eabf48f65e1c368cd2e8f2228bcbc6235b97c85aa22e84dae67dc730665d7ed38f502a62b28130ce3151563221c7cbd4a651ff080b69c9813434ba21013bc4923391fcf505fb6a9c5015868a4e7ef6719927da19a8b4348e4853200c9337c5d468a8e4967ef9739b433138d2c04f61d64eb8ed808a27c4f64bd3facde937f861bc61bc3c2b14616353c21fa79833375ee0dd0310739e2b6da2ba35ea5858628900cbe49654410b30ad1063bebf3d4a52fdf6f8e6e9b75e8378e614117755f684e146ddfa0555308d7e40d171eb44cafbc65a16708914042a3f0b1cba665ec57ce0b599fffe569156fbf7aa359352b3d6479d80c02fc91925f66c332d0b6ee332271c62869baf96ea4d1b930474bfd7d0d90785999922355192bdef339427ed3cadefa674dbbad2ee67b86ee0e948738828726b5600d24a23e799f879ef0677409799c4aa6b18875708abc72ce1b4cc84cdac63f0608fc00ecd852a6106318be6e61bc60d3ec9d568e8d52d7feeb66688adbe4ad4fb793f769500a80b875519652aea9f1e5daf570891742d323d83ec49433bc509a6eb1da7657adcab351e5ebff303ba5d39f3b475c74e71bcd8881adb96a098408dd00c4cf3c9fb773e54dfd1e14a88b91c29e0d0811f1b086a5a3a3835fcd9cf8a3df2fc9fc125e48cfc7b934f8b89cfd64220257b4d9fe105a046505c9077848e4878ac9eace5e00b4a48a1e34867d6c04b395f28e45fc353bdde1aa0a9d1693e4af0b447c884f84d0ede3325898049abde0328a9456bbe40c413efa434fa33ce4532fffb8e89cf22f5070d0befd307a0eba151479f5bb5f016b9eee77ba09acadacdec11b61dbde3a8bde4e2bfbbd919b8cd65c2d9cadea47361c530143aac288cbe7a6fff9676cd351f6012ce64019e74002a75a1a2a66a633deb8097a4d5b5388887828d876b35c1ccadc7da99c84aa7e60fbc62de67716ff3cca994e7f867b468eb6a0e5dfbd969442e12625d7d51f9126721316f6d4631e0f80dfdb73f9eac1143f0e2c93f19961a56788508b85bc301e614268696bc6f3f1c2021fd5dbfc3ae9d840f17ff27a5d119215aa45a35e923dcac448d5ed0142b5788748d33bbbf9139eedab223b61e3311b56d3bac358fe0f407b660aa0033f2cc7d6a3323003487f05de56431a60ffd28320764a8a7d3b44ebf805a9bdd8ad8a61d10c58266cbb0442815ddaad4722e09786e3c744de49b618528c240602d70a853562093fb65a15d900270288595ed12153fcd6a50065a497f8bd713be5ca94b71e3441a07524de40ce87cc5f502e6d14830dfd6c0792d8660f45ab794d588f21f056804d02df14ad5c454dc38fe30caa344d818bdce8654fe31822bf24e58278b1d2a98f3c8633b03198bb69c24bec0981d0f66ac18923e784f9659de2561cb68c9f24df300125ed25821a2db508402e618ace8d0bae6516fe0937f81cd49e093b00980bf8f85b5062760bfd68dfaf15e19f8c5b08ae70cbeb8af0aeb4c180e33f5be1687f455b34c1f207b9fb1605709e2294bc8e4ca9b0b4f087a234d72fffdfd986171413eeb54252026b09894ecaec1e407fed576b4976aef4b0086f2611d4c8a2c4078ea1f0c5fb7c8909426427313f480d5b16717634329092543953ffba822bdf4f5073a0551647795d6ddde1155717d7fa0a5aed8dee2f1151d1f5366b7d1e5fd0d6a6cee7b7f8698d9e9f8f9fa02035d62c5000000000000000008141d212a2f",
+ "public_key_hex": "9bd04b6d2be07dc5e77afbd8d99ee14d63120f3564b7fbdbba141ca288c5403351f72a5139f8287daf591c1cf77350173921a9e55106350d236da90ea5b6c6ab2882c34ac3c01c8a82724658140279408717944cc8577709192b283868656798421c24275cd8e5c9c42ed8c9a88cb7fc5af2a6da3e2d0813d5af96fe63be0ba04e09b3ce3d969f1ea2da644884e65173d69635e79a44e9d85db196fd405894dde1bf84d1225003bcc6e3c64b0a67420321bcec56829bfa97443210beba7c64536eb1a002c36f06621203a2727c978651fa55ac2f51c45c893683d626e39512b279112b26102c05bd04370db58900739a30dad3ac1720bb301ac14827be795ee2b3c88e86cc89e01a8e991435f600b324f12402407d872620d7b8500a5ca5aa492b299580e41d3666ee2d27aa48d75e92bff8ad7d61b6bf35eaf24bc52cfd2ca1ac87ff3b8cb02548546df17e0e012b0d7789b26ef4a4946f5210db6af4affba3f2985f1d056d713aa15fa0e5fd6203f5da4da436cc65d716f382a2241a74deb486d9ce67ef98b0af29ea6ba5c23ff48bc61450ed7db92b5bf568839579b00b470e81f1147efd66c94e8ac028eec3778d7429727aaa0fb1dec3308ec89ccfe0b1e4f08f9c898e753e4800ad81f2ea5a5db11758fe4876a0c6c281ea9f5bf77343fc646912d08cf09d3b30f060033aa62eb7803e927e057fc337eed544e9ecd44a21e48ac6a52cf3c0d48a44eee74c8c1d0fe5899d4cdc76dffce7afe9f656a2d51e3159ac48ee47af1be6bd8c7ebad2ffc70494f8bdc7078cdc942fb49cdccf728e5d9cd0d3d59a52db982476c2f2a1e5a311048562b06bd58e3c656d9defc7c69b02f89a42d14cfa965904a8ec16723457214b7187b052f81b1bafabe07b2aaaab44f8af31c01de43d1f4406127a3d7bb1340d4cc47b0059bc1dd5bd6314d7183c503f5532ff147c991e72e7866466890dcd18f474e1a7c8d70f6037c51c7182979e7f665b20a6be83b0e507967cf29e8669a4b94050c6ebddd5b3de80bffab992586100bfef3eccb413ef85e896c4ea82514f0b91f88d778a0abb84e2feec7e641c9ad28aff3d8106eb3f0284ed8ae443426647b4fc79344f060221f03c9f37795f63f7591902d82377b8c65bd0cf5b7993f645b85092600a6052a137dd81bb23d4ede522122e6ce78e3be48b59c6d155f7e266650d5ee40c53b020088f822fd20c13c7c7a921cb9ee2b127641c6d869efa026c461e74845c790bd2bc35e865ac99b253b2b42146bbefeef0f771960c3cace36f8cbbf167cf3759f834a8286d277f89266b627086c268be5468e0bf84d035af109c1bbd7a5b8ab53771372e398dfe8a52480d9c85b501515cce813630f1883ea69e8eff0c98d9f4446196981c966e3581e12c55e84414dd757b988edfce86445f2d31898d1ae68e4e0ec27852ceb16f1e703bf05742e6cfe9077dce80c30575fef21a4e7b47b52ff3ad8ac6ef843253b53c1ddfd12e7274bdc35717fd2cb8e5f7a3d7dac121240dc70475a891f1972f415ea1c17d83a69ed0e2359c9f02650e51c19c054debd812bafa22f371f4987f42c18fc395ffdb83a4a7bda3914d63c4da9b0b7278d385dfd68679943a372afcc0b3bd74e4e1e38c3f8e1a5cb77bbe89b309d2de0825841413c31d9a70c18bc198afe4f0c4aae107e50e936c58a82a4fb6c9fc389e2269294b459231e4d54ff2eb9381e4ad44f2a46422856794fb224d31480bd10f357be9bb1ca4020abec07bf431799f82f4ecdef6b802c4ee5d9fa8e301d1c22fd14bad435dade5e06aeaeca738a1b6e4c812787f6034191ce529ab7a5846f4ddad2c03ccb91744a7d10da5102ac0f273b8a47f4b53bcd5ca318aa6b59ae1453509f418273efbe2d686a5111d1ebd85425976fbbb989a60d0a79f5dc1a7a7180bbdffe77b2cddaf7e4e9829af0def72d96bf7439ebf177a2c79815667b9449e3d9311597e51439ebb0f81481a0e35566b1563fc868a9f4bd10fd3e444b89b9750e562bc1e9306fd988569b82c4230d570261b907d733b65e9be24da85d00ff3eedd1594ba5d799a41c356adccabfc53e265077ad07050537c9157ea7a35ddee3c1aec628d5b8fccdacbb3f0c0a1804ed8ded9d74e6e00812a35ad7a59223e24a5bd59d3c6065f1ba0654ddba2965108731ed8cbd3e429cf5f23077ce45827c749056fedfe6b813b9574d1a09f4368b8e8415968c8ac53d8117a11546143009c76546e048270ef6c0d78a9b1a5cbaa84710de21d21b84a85af57cbfe60df008b86fb0c8c54880ae984face7a0870f9f660f4812e3b448764f7a3d0a649881dc5da750aa99f8f99758f72a4af5839cbbc51af1bbfb544ffacc68fcd6cac74c441627c9d18dddcff1735bb2f37828274ec928bfd254dbb993aa1e3b41eec34cfe3953d54a33859df893b302509bad717fbbc4379e1a6392afb7c106e9ac3fdf5a91bd1df35c1c5ed0f8b9a3cbbbad8e15fa416439161f3cb2b257b0c7ba2e17239c33099e0aee6e401b66d7664a4620af80e5cc8eedbec20c5964a5b61a4aed8f231c1384b90f204147422f83a1f01119ca5243a9d11fee81fb6e101e606a5cdac3281de4e3771b37322e6278dd0b59a4bfddc875d099224e58ffefbfd8449000e0d36c81e64ccf4abe914f02f8fe3f5c73d1e90d4a6636b16ddf72e91d9fc95c032066154235992e852859232dae43712bfa25103d32b7abc0b4861c64c6cbd735920b30bf034891667",
+ "public_key_fingerprint": "SHA256:7fea:19c6:1752:00ed:ceac:1d54:f9ee:3ae7",
+ "algorithm": "ML-DSA-65",
+ "audit": {
+  "entries": 27,
+  "head_hash": "00279a243267285aea7a8836c7131cc1d9f612614c90e131a23ab474ca5f09f9",
+  "file": "audit.jsonl"
+ }
+}

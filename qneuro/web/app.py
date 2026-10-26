@@ -358,7 +358,7 @@ async def verify_uploaded_file(request: Request, run_file: UploadFile = File(...
         temp_path.write_bytes(content)
         parsed = _parse_run_file(temp_path)
         if not parsed:
-            raise ValueError("File is not a valid SignedReport or SignedRun JSON document")
+            raise ValueError("TAMPER DETECTED: this file no longer parses as a signed report or run, so its signature cannot be checked. A single changed byte can do this.")
 
         tamper_msg = None
         if not parsed["verified"]:

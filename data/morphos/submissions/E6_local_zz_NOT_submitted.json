@@ -1,0 +1,259 @@
+{
+  "metadata": {
+    "track": "M1 - Heart Failure Clinical Records Survival Prediction",
+    "task_type": "Binary Clinical Classification",
+    "ranking_metric": "MCC (Matthews Correlation Coefficient)",
+    "timestamp": "2026-10-13T11:36:38.264979+00:00",
+    "n_train_samples": 239,
+    "n_test_samples": 60,
+    "n_features": 4,
+    "features": [
+      "ejection_fraction",
+      "serum_creatinine",
+      "age",
+      "time"
+    ],
+    "target": "death_event",
+    "quantum_configuration": {
+      "algorithm": "QSVM",
+      "n_qubits": 4,
+      "feature_map": "ZZFeatureMap (full entanglement, fidelity kernel)",
+      "depth_repetitions": 1,
+      "input_scaling": "MinMax to [0,1], then multiplied by 0.3 (chosen by 5-fold CV MCC over 1.0 vs 0.3)",
+      "hardware_platform": "Local exact NumPy statevector simulation (not run on Bloq cluster)"
+    },
+    "leakage_audit_note": "This run includes follow-up time, which the track permits. Follow-up time can carry outcome information and would not be available at true prediction time, so reported MCC may be higher than for a deployable model. No no-time comparison is included in this file."
+  },
+  "performance_summary": {
+    "QSVM (Quantum Kernel)": {
+      "cv_5fold": {
+        "mcc_mean": 0.5688,
+        "mcc_ci_95": [
+          0.4273,
+          0.7103
+        ],
+        "mcc_folds": [
+          0.4573,
+          0.5427,
+          0.5186,
+          0.5661,
+          0.7593
+        ],
+        "accuracy_mean": 0.8162,
+        "accuracy_folds": [
+          0.7708,
+          0.8125,
+          0.7917,
+          0.8125,
+          0.8936
+        ],
+        "f1_mean": 0.6672,
+        "roc_auc_mean": 0.88,
+        "mean_train_time_sec": 0.0015
+      },
+      "holdout_test": {
+        "mcc": 0.8054691103977099,
+        "accuracy": 0.9,
+        "f1": 0.8636363636363636,
+        "precision": 0.76,
+        "recall": 1.0,
+        "roc_auc": 0.9255455712451861,
+        "train_time_seconds": 0.0009984970092773438
+      }
+    },
+    "LogisticRegression": {
+      "cv_5fold": {
+        "mcc_mean": 0.5483,
+        "mcc_ci_95": [
+          0.3713,
+          0.7253
+        ],
+        "mcc_folds": [
+          0.4221,
+          0.4247,
+          0.5186,
+          0.6167,
+          0.7593
+        ],
+        "accuracy_mean": 0.8121,
+        "accuracy_folds": [
+          0.7708,
+          0.7708,
+          0.7917,
+          0.8333,
+          0.8936
+        ],
+        "f1_mean": 0.6314,
+        "roc_auc_mean": 0.8615,
+        "mean_train_time_sec": 0.0034
+      },
+      "holdout_test": {
+        "mcc": 0.7459756021776387,
+        "accuracy": 0.8833333333333333,
+        "f1": 0.8292682926829268,
+        "precision": 0.7727272727272727,
+        "recall": 0.8947368421052632,
+        "roc_auc": 0.9358151476251604,
+        "train_time_seconds": 0.0019767284393310547
+      }
+    },
+    "RandomForest": {
+      "cv_5fold": {
+        "mcc_mean": 0.587,
+        "mcc_ci_95": [
+          0.4279,
+          0.7461
+        ],
+        "mcc_folds": [
+          0.4182,
+          0.7091,
+          0.4928,
+          0.6158,
+          0.6991
+        ],
+        "accuracy_mean": 0.8203,
+        "accuracy_folds": [
+          0.75,
+          0.875,
+          0.7708,
+          0.8333,
+          0.8723
+        ],
+        "f1_mean": 0.7171,
+        "roc_auc_mean": 0.917,
+        "mean_train_time_sec": 0.136
+      },
+      "holdout_test": {
+        "mcc": 0.6805741948407684,
+        "accuracy": 0.8333333333333334,
+        "f1": 0.782608695652174,
+        "precision": 0.6666666666666666,
+        "recall": 0.9473684210526315,
+        "roc_auc": 0.892811296534018,
+        "train_time_seconds": 0.19181418418884277
+      }
+    },
+    "GradientBoosting": {
+      "cv_5fold": {
+        "mcc_mean": 0.5876,
+        "mcc_ci_95": [
+          0.4493,
+          0.7259
+        ],
+        "mcc_folds": [
+          0.4573,
+          0.5152,
+          0.6025,
+          0.6124,
+          0.7506
+        ],
+        "accuracy_mean": 0.8204,
+        "accuracy_folds": [
+          0.7708,
+          0.7917,
+          0.8125,
+          0.8333,
+          0.8936
+        ],
+        "f1_mean": 0.7119,
+        "roc_auc_mean": 0.8966,
+        "mean_train_time_sec": 0.0837
+      },
+      "holdout_test": {
+        "mcc": 0.7327952057001721,
+        "accuracy": 0.8666666666666667,
+        "f1": 0.8181818181818182,
+        "precision": 0.72,
+        "recall": 0.9473684210526315,
+        "roc_auc": 0.9229781771501925,
+        "train_time_seconds": 0.08751034736633301
+      }
+    },
+    "SVM-RBF": {
+      "cv_5fold": {
+        "mcc_mean": 0.525,
+        "mcc_ci_95": [
+          0.334,
+          0.7161
+        ],
+        "mcc_folds": [
+          0.3373,
+          0.6487,
+          0.5312,
+          0.4082,
+          0.6996
+        ],
+        "accuracy_mean": 0.7995,
+        "accuracy_folds": [
+          0.7292,
+          0.8542,
+          0.7917,
+          0.75,
+          0.8723
+        ],
+        "f1_mean": 0.6575,
+        "roc_auc_mean": 0.8824,
+        "mean_train_time_sec": 0.0014
+      },
+      "holdout_test": {
+        "mcc": 0.7784624283452708,
+        "accuracy": 0.8833333333333333,
+        "f1": 0.8444444444444444,
+        "precision": 0.7307692307692307,
+        "recall": 1.0,
+        "roc_auc": 0.9139922978177151,
+        "train_time_seconds": 0.0017826557159423828
+      }
+    },
+    "XGBoost": {
+      "cv_5fold": {
+        "mcc_mean": 0.5775,
+        "mcc_ci_95": [
+          0.4458,
+          0.7092
+        ],
+        "mcc_folds": [
+          0.4411,
+          0.5721,
+          0.5121,
+          0.663,
+          0.6991
+        ],
+        "accuracy_mean": 0.8161,
+        "accuracy_folds": [
+          0.7708,
+          0.8125,
+          0.7708,
+          0.8542,
+          0.8723
+        ],
+        "f1_mean": 0.7065,
+        "roc_auc_mean": 0.8988,
+        "mean_train_time_sec": 0.0163
+      },
+      "holdout_test": {
+        "mcc": 0.6321310123395755,
+        "accuracy": 0.8,
+        "f1": 0.75,
+        "precision": 0.6206896551724138,
+        "recall": 0.9473684210526315,
+        "roc_auc": 0.8908857509627727,
+        "train_time_seconds": 0.015999794006347656
+      }
+    }
+  },
+  "statistical_comparison": {
+    "quantum_model": "QSVM (Quantum Kernel)",
+    "benchmark_classical_model": "RandomForest",
+    "cv_mcc_quantum_mean": 0.5688,
+    "cv_mcc_classical_mean": 0.587,
+    "delta_mcc": -0.0182,
+    "delta_ci_95": [
+      -0.1332,
+      0.0968
+    ],
+    "paired_t_statistic": -0.4388,
+    "p_value": 0.6835,
+    "verdict": "Computed on identical 5-fold splits. See delta_mcc and p_value for the quantum-vs-RandomForest comparison."
+  }
+}

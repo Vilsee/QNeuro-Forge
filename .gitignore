@@ -48,3 +48,6 @@ node_modules/
 .vercel/
 
 .vercel
+
+# Demo output
+demo/out/

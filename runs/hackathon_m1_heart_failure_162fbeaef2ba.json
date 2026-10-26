@@ -17,11 +17,11 @@
     "quantum_configuration": {
       "algorithm": "QSVM",
       "n_qubits": 4,
-      "feature_map": "ZZFeatureMap (Angle Embedding product state fidelity)",
+      "feature_map": "Angle Embedding fidelity kernel (product-state, no entanglement)",
       "depth_repetitions": 1,
       "hardware_platform": "Bloq Platform Cluster / Quantum Kernel Simulator"
     },
-    "leakage_audit_note": "Regulatory-aware clinical pipeline: evaluates cohort with follow-up time. Benchmark demonstrated that time inflates MCC scores significantly across both quantum and classical baselines."
+    "leakage_audit_note": "This run includes follow-up time, which the track permits. Follow-up time can carry outcome information and would not be available at true prediction time, so reported MCC may be higher than for a deployable model. No no-time comparison is included in this file."
   },
   "performance_summary": {
     "QSVM (Quantum Kernel)": {
@@ -253,6 +253,6 @@
     ],
     "paired_t_statistic": -2.0316,
     "p_value": 0.112,
-    "verdict": "Validation benchmark completed. Follows regulatory guidelines reporting confidence intervals and rigorous holdout metrics."
+    "verdict": "QSVM holdout MCC is comparable to the classical models. Its 5-fold CV MCC is lower than RandomForest's, but the difference is not statistically significant (p = 0.112)."
   }
 }

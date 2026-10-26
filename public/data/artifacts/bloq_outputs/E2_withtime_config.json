@@ -1,0 +1,86 @@
+{
+  "experiment_type": "ml",
+  "title": "qneuro_hf_qsvm_notime",
+  "algorithm": "QSVM",
+  "parameters": {
+    "No. of Qubits": 4,
+    "Circuit Depth": 1,
+    "Device": {
+      "name": "aer_simulator",
+      "provider": "ibm",
+      "isSimulator": true,
+      "method": "automatic"
+    },
+    "Feature Map": {
+      "isDefault": true,
+      "name": "ZZ Feature Map"
+    },
+    "Use NumPy Inner Product": true
+  },
+  "output": {
+    "0": {
+      "precision": 0.6888888888888889,
+      "recall": 0.9393939393939394,
+      "f1-score": 0.7948717948717948,
+      "support": 33
+    },
+    "1": {
+      "precision": 0.3333333333333333,
+      "recall": 0.06666666666666667,
+      "f1-score": 0.1111111111111111,
+      "support": 15
+    },
+    "logs": [
+      {
+        "timestamp": "2026-10-13T11:13:28.077504+00:00",
+        "type": "queued",
+        "message": "Experiment queued"
+      },
+      {
+        "timestamp": "2026-10-13T11:13:34.925856+00:00",
+        "type": "running",
+        "message": "Experiment running"
+      },
+      {
+        "timestamp": "2026-10-13T11:13:39.161179+00:00",
+        "type": "completed",
+        "message": "Experiment completed"
+      }
+    ],
+    "accuracy": 0.6666666666666666,
+    "macro avg": {
+      "precision": 0.5111111111111111,
+      "recall": 0.503030303030303,
+      "f1-score": 0.45299145299145294,
+      "support": 48
+    },
+    "weighted avg": {
+      "precision": 0.5777777777777778,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.5811965811965812,
+      "support": 48
+    },
+    "confusion_matrix": [
+      [
+        31,
+        2
+      ],
+      [
+        14,
+        1
+      ]
+    ],
+    "mcc": 0.011605177063713189
+  },
+  "dataset": "hf_withtime_train.csv",
+  "size": 239,
+  "trainTestRatio": 80,
+  "selectedFeatures": [
+    "ejection_fraction",
+    "serum_creatinine",
+    "age",
+    "time"
+  ],
+  "targetFeature": "death_event",
+  "task_type": "Binary Classification"
+}
