@@ -1,0 +1,4 @@
+# Files whose bytes are hashed in the signed manifest must never go through line-ending conversion.
+data/morphos/** -text
+public/data/** -text
+runs/** -text
