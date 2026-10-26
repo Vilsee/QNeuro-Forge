@@ -148,24 +148,48 @@ def benchmark_e6(split: Split | None = None, scale: float = 0.3, seed: int = 42)
     return dict(performance_summary=perf, statistical_comparison=stat, scale_selection=selection, scale_used=scale)
 
 
+SCORE_TOLERANCE = 5e-4  # ROC-AUC depends on float ordering of probabilities, so library versions can move it a little
+
+
 def compare_with_stored_e6(result: dict[str, Any], stored_path: Path | None = None) -> dict[str, Any]:
-    """Diff a fresh E6 run against the stored JSON (timing fields excluded)."""
+    """Diff a fresh E6 run against the stored JSON (timing excluded).
+
+    Class-prediction metrics (MCC, accuracy, F1, precision, recall) and every fold score must be identical.
+    Score-based ROC-AUC may differ by up to SCORE_TOLERANCE, because it depends on the order of floating-point
+    probabilities, which can change between scikit-learn versions and platforms.
+    """
     stored = json.loads((stored_path or DATA / "submissions" / "E6_local_zz_NOT_submitted.json").read_text("utf-8"))
     diffs: list[str] = []
+    score_diffs: list[dict[str, Any]] = []
     for m, row in result["performance_summary"].items():
         sm = stored["performance_summary"][m]
-        for k in ("mcc_mean", "mcc_ci_95", "mcc_folds", "accuracy_mean", "f1_mean", "roc_auc_mean"):
+        for k in ("mcc_mean", "mcc_ci_95", "mcc_folds", "accuracy_mean", "f1_mean"):
             if row["cv_5fold"][k] != sm["cv_5fold"][k]:
                 diffs.append(f"{m} cv {k}")
+        a, b = row["cv_5fold"]["roc_auc_mean"], sm["cv_5fold"]["roc_auc_mean"]
+        if a != b:
+            score_diffs.append(dict(field=f"{m} cv roc_auc_mean", ours=a, stored=b, diff=abs(a - b)))
         for k, v in row["holdout_test"].items():
             if k == "train_time_seconds":
                 continue
-            if abs(v - sm["holdout_test"][k]) > 1e-9:
+            d = abs(v - sm["holdout_test"][k])
+            if k == "roc_auc":
+                if d > 1e-12:
+                    score_diffs.append(dict(field=f"{m} holdout roc_auc", ours=v, stored=sm["holdout_test"][k], diff=d))
+            elif d > 1e-9:
                 diffs.append(f"{m} holdout {k}")
     for k, v in result["statistical_comparison"].items():
         if v != stored["statistical_comparison"][k]:
             diffs.append(f"stat {k}")
-    return dict(n_differences=len(diffs), differences=diffs, identical=len(diffs) == 0)
+    max_score = max((x["diff"] for x in score_diffs), default=0.0)
+    return dict(
+        n_differences=len(diffs),
+        differences=diffs,
+        score_differences=score_diffs,
+        max_score_diff=max_score,
+        identical=len(diffs) == 0 and max_score <= SCORE_TOLERANCE,
+        bit_identical=len(diffs) == 0 and not score_diffs,
+    )
 
 
 # --------------------------------------------------------------------------- E5

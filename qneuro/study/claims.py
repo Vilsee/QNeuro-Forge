@@ -203,15 +203,18 @@ def build_claims(ctx: dict[str, Any]) -> list[dict[str, Any]]:
     )
 
     # ---- E6
+    ms = e6cmp.get("max_score_diff", 0.0)
     add(
         "C-E6",
         "E6 local ZZ benchmark (not submitted): QSVM CV MCC 0.569, holdout 0.806.",
         "data/morphos/submissions/E6_local_zz_NOT_submitted.json",
         "reproduced" if e6cmp["identical"] else "partly",
-        f"Fresh run against the stored file: {e6cmp['n_differences']} differing values (timing excluded). "
+        f"Fresh run against the stored file: {e6cmp['n_differences']} differing class-based values (timing excluded). "
         f"QSVM CV {e6['performance_summary']['QSVM (Quantum Kernel)']['cv_5fold']['mcc_mean']:.4f}, "
-        f"holdout {e6['performance_summary']['QSVM (Quantum Kernel)']['holdout_test']['mcc']:.4f}.",
-        "Every metric and fold score identical.",
+        f"holdout {e6['performance_summary']['QSVM (Quantum Kernel)']['holdout_test']['mcc']:.4f}."
+        + ("" if ms == 0 else f" Largest ROC-AUC difference {ms:.4f}."),
+        "Every metric and fold score identical." if ms == 0 else
+        "Every fold MCC and class-based metric is identical. ROC-AUC differs slightly, which depends on float ordering and library version.",
     )
 
     # ---- integrity

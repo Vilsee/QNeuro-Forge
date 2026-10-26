@@ -58,7 +58,7 @@ Presenting: `.\scripts\demo.ps1` runs the terminal half with pauses, and `python
 
 - `data/morphos/` holds the submitted files exactly as handed in: the four prepared CSVs, the raw Bloq outputs for E1 and E2, the submitted file, the original Bloq export, the local E6 file and the five scripts.
 - `qneuro/study/kernels.py` implements the ZZ feature map and the angle-embedding kernel in NumPy. A test checks the angle kernel against PennyLane.
-- `qneuro/study/experiments.py` re-runs the experiments. E6 reproduces the stored file with zero differing values.
+- `qneuro/study/experiments.py` re-runs the experiments. E6 reproduces the stored file: every fold MCC and class-based metric is identical, and ROC-AUC agrees to within 0.0005 (it can move in the last digit between library versions).
 - `qneuro/study/claims.py` turns every claim in the report into a recomputed value and a status: reproduced, partly reproduced, not reproduced, supported, hypothesis, or not verifiable.
 - `qneuro/study/build.py` hashes 18 files into a manifest, signs the study with ML-DSA-65 and records each step in a signed, hash-chained audit log. `qneuro.guard` decides the quantum-versus-classical verdict, and it is the only code that words an advantage claim.
 - `public/index.html` renders the signed study. The browser recomputes every file hash itself. It cannot check an ML-DSA signature, so `qneuro study verify` does that.
@@ -88,4 +88,4 @@ Dataset: Heart Failure Clinical Records, UCI Machine Learning Repository, id 519
 pytest -q
 ```
 
-57 tests. `tests/test_study.py` re-runs real experiments: E6 must equal the stored file, E5 holdout metrics must match, the product kernel must equal PennyLane's angle embedding, and a tampered study must fail verification.
+58 tests. `tests/test_study.py` re-runs real experiments: E6 must match the stored file, E5 holdout metrics must match, the product kernel must equal PennyLane's angle embedding, and a tampered study must fail verification.

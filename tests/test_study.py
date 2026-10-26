@@ -52,9 +52,35 @@ def test_mcc_from_confusion_matches_bloq_output() -> None:
     assert ex.mcc_from_confusion([[33, 0], [15, 0]]) == 0.0
 
 
-def test_e6_reproduces_the_stored_file_exactly() -> None:
+def test_e6_reproduces_the_stored_file() -> None:
     res = ex.compare_with_stored_e6(ex.benchmark_e6())
-    assert res["identical"], res["differences"]
+    # Class-based metrics and every fold score must match exactly on any machine.
+    assert res["n_differences"] == 0, res["differences"]
+    # ROC-AUC may move in the last digits between library versions, but not by more than the tolerance.
+    assert res["identical"], res["score_differences"]
+
+
+def test_compare_tolerates_tiny_auc_drift_but_not_real_change() -> None:
+    """Environment independent: built from the stored file, not from a fresh run."""
+    import copy
+
+    stored = json.loads((DATA / "submissions" / "E6_local_zz_NOT_submitted.json").read_text())
+
+    def fresh():
+        return {"performance_summary": copy.deepcopy(stored["performance_summary"]),
+                "statistical_comparison": copy.deepcopy(stored["statistical_comparison"])}
+
+    assert ex.compare_with_stored_e6(fresh())["bit_identical"]
+    drift = fresh()
+    drift["performance_summary"]["GradientBoosting"]["cv_5fold"]["roc_auc_mean"] += 2e-4
+    r = ex.compare_with_stored_e6(drift)
+    assert r["identical"] and not r["bit_identical"]
+    moved = fresh()
+    moved["performance_summary"]["GradientBoosting"]["cv_5fold"]["roc_auc_mean"] += 5e-3
+    assert not ex.compare_with_stored_e6(moved)["identical"]
+    flipped = fresh()
+    flipped["performance_summary"]["RandomForest"]["cv_5fold"]["mcc_mean"] += 1e-4
+    assert ex.compare_with_stored_e6(flipped)["n_differences"] == 1
 
 
 def test_e5_submitted_qsvm_holdout_reproduces() -> None:
