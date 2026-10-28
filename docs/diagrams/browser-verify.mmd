@@ -1,0 +1,22 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#E8E7E2","primaryTextColor":"#1C1B18","primaryBorderColor":"#1C1B18","lineColor":"#57544C","secondaryColor":"#DDDBD3","tertiaryColor":"#E8E7E2","edgeLabelBackground":"#E8E7E2","clusterBkg":"#E8E7E2","clusterBorder":"#CAC7BC","noteBkgColor":"#DDDBD3","noteTextColor":"#1C1B18","actorBkg":"#E8E7E2","actorBorder":"#1C1B18","actorTextColor":"#1C1B18","signalColor":"#57544C","signalTextColor":"#1C1B18","labelBoxBkgColor":"#DDDBD3","labelBoxBorderColor":"#1C1B18","labelTextColor":"#1C1B18","loopTextColor":"#1C1B18","activationBkgColor":"#D3E0D6","activationBorderColor":"#1E6B55","sequenceNumberColor":"#E8E7E2","fontFamily":"ui-sans-serif, system-ui, Segoe UI, Helvetica, Arial, sans-serif"}}}%%
+sequenceDiagram
+  autonumber
+  actor P as Presenter
+  participant B as Browser page
+  participant S as Static site (Vercel or localhost)
+  participant M as Signed manifest in study.json
+  P->>B: press "Verify all files"
+  loop each of the 18 files
+    B->>S: GET /data/artifacts/path
+    S-->>B: file bytes
+    B->>B: SHA-256 with the browser's own crypto
+    B->>M: compare with the signed hash
+    M-->>B: match
+  end
+  B-->>P: "All 18 files match the signed manifest"
+  P->>B: press "Corrupt one byte, then verify"
+  B->>B: change one digit of SUBMITTED_corrected.json in memory
+  B->>M: compare again
+  M-->>B: 1 mismatch
+  B-->>P: red band: TAMPERED, expected hash and actual hash
+  Note over B,M: A browser can hash files but cannot check an ML-DSA signature. The command line does that.

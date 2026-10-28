@@ -1,0 +1,19 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#E8E7E2","primaryTextColor":"#1C1B18","primaryBorderColor":"#1C1B18","lineColor":"#57544C","secondaryColor":"#DDDBD3","tertiaryColor":"#E8E7E2","edgeLabelBackground":"#E8E7E2","clusterBkg":"#E8E7E2","clusterBorder":"#CAC7BC","noteBkgColor":"#DDDBD3","noteTextColor":"#1C1B18","actorBkg":"#E8E7E2","actorBorder":"#1C1B18","actorTextColor":"#1C1B18","signalColor":"#57544C","signalTextColor":"#1C1B18","labelBoxBkgColor":"#DDDBD3","labelBoxBorderColor":"#1C1B18","labelTextColor":"#1C1B18","loopTextColor":"#1C1B18","activationBkgColor":"#D3E0D6","activationBorderColor":"#1E6B55","sequenceNumberColor":"#E8E7E2","fontFamily":"ui-sans-serif, system-ui, Segoe UI, Helvetica, Arial, sans-serif"}}}%%
+flowchart TD
+  I["Fold scores for every quantum config tried<br/>and for each classical model<br/>same 15 paired splits"] --> Q{"Any missing data<br/>or fewer than 5 folds?"}
+  Q -- yes --> N1(["INSUFFICIENT_DATA"])
+  Q -- no --> BC["Best classical model = highest mean score"]
+  BC --> T["For each quantum config:<br/>paired differences against the best classical<br/>Nadeau-Bengio corrected t-test, one p-value each"]
+  T --> H["Holm correction across all quantum configs tried"]
+  H --> BQ["Best quantum config = highest mean score<br/>95% bootstrap interval of its mean difference"]
+  BQ --> D1{"difference above +0.02<br/>and corrected p below 0.05<br/>and interval lower bound above 0?"}
+  D1 -- yes --> A(["ADVANTAGE_SUPPORTED"])
+  D1 -- no --> D2{"difference below -0.02<br/>and corrected p below 0.05<br/>and interval upper bound below 0?"}
+  D2 -- yes --> B(["CLASSICAL_BETTER"])
+  D2 -- no --> C(["NO_DIFFERENCE"])
+  A --> TXT["Verdict sentence is written from the numbers<br/>only qneuro.guard words an advantage claim"]
+  B --> TXT
+  C --> TXT
+  N1 --> TXT
+  classDef sec stroke:#1E6B55,stroke-width:2px;
+  class TXT sec;

@@ -1,0 +1,19 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#E8E7E2","primaryTextColor":"#1C1B18","primaryBorderColor":"#1C1B18","lineColor":"#57544C","secondaryColor":"#DDDBD3","tertiaryColor":"#E8E7E2","edgeLabelBackground":"#E8E7E2","clusterBkg":"#E8E7E2","clusterBorder":"#CAC7BC","noteBkgColor":"#DDDBD3","noteTextColor":"#1C1B18","actorBkg":"#E8E7E2","actorBorder":"#1C1B18","actorTextColor":"#1C1B18","signalColor":"#57544C","signalTextColor":"#1C1B18","labelBoxBkgColor":"#DDDBD3","labelBoxBorderColor":"#1C1B18","labelTextColor":"#1C1B18","loopTextColor":"#1C1B18","activationBkgColor":"#D3E0D6","activationBorderColor":"#1E6B55","sequenceNumberColor":"#E8E7E2","fontFamily":"ui-sans-serif, system-ui, Segoe UI, Helvetica, Arial, sans-serif"}}}%%
+flowchart TD
+  start(["qneuro study verify"]) --> c1{"1. ML-DSA-65 signature<br/>valid for the study?"}
+  c1 -- yes --> c2{"2. Study hash equals<br/>the recorded hash?"}
+  c1 -- no --> F(["FAIL: study was edited"])
+  c2 -- yes --> c3{"3. All 18 files match<br/>the signed manifest?"}
+  c2 -- no --> F2(["FAIL: study was edited"])
+  c3 -- yes --> c4{"4. Audit chain intact?<br/>links and signatures"}
+  c3 -- no --> F3(["FAIL: a data file or script changed,<br/>the path is printed"])
+  c4 -- yes --> c5{"5. Last entry seals<br/>this exact study?"}
+  c4 -- no --> F4(["FAIL: entry number and reason printed"])
+  c5 -- yes --> c6{"6. Published audit copy<br/>equals the local chain?"}
+  c5 -- no --> F5(["FAIL: study and log disagree"])
+  c6 -- yes --> P(["ALL CHECKS PASSED"])
+  c6 -- no --> F6(["FAIL: website copy differs"])
+  classDef ok stroke:#1E6B55,stroke-width:2px;
+  classDef bad stroke:#A83224,stroke-width:2px;
+  class P ok;
+  class F,F2,F3,F4,F5,F6 bad;

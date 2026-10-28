@@ -1,0 +1,10 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#E8E7E2","primaryTextColor":"#1C1B18","primaryBorderColor":"#1C1B18","lineColor":"#57544C","secondaryColor":"#DDDBD3","tertiaryColor":"#E8E7E2","edgeLabelBackground":"#E8E7E2","clusterBkg":"#E8E7E2","clusterBorder":"#CAC7BC","noteBkgColor":"#DDDBD3","noteTextColor":"#1C1B18","actorBkg":"#E8E7E2","actorBorder":"#1C1B18","actorTextColor":"#1C1B18","signalColor":"#57544C","signalTextColor":"#1C1B18","labelBoxBkgColor":"#DDDBD3","labelBoxBorderColor":"#1C1B18","labelTextColor":"#1C1B18","loopTextColor":"#1C1B18","activationBkgColor":"#D3E0D6","activationBorderColor":"#1E6B55","sequenceNumberColor":"#E8E7E2","fontFamily":"ui-sans-serif, system-ui, Segoe UI, Helvetica, Arial, sans-serif"}}}%%
+flowchart TB
+  subgraph W["Browser: 11 walkthrough steps, about 8 minutes"]
+    direction LR
+    W1["Steps 1 and 2<br/>answer, experiments"] --> W2["Steps 3 and 4<br/>Bloq runs, claims"] --> W3["Steps 5 to 7<br/>holdout, fair comparison,<br/>follow-up time"] --> W4["Steps 8 to 10<br/>edit diff, hash check,<br/>signature"] --> W5["Step 11<br/>limits"]
+  end
+  subgraph T["Terminal: 4 commands, about 4 minutes, run after step 10"]
+    direction LR
+    T1["qneuro study<br/>reproduce"] --> T2["qneuro study<br/>verify"] --> T3["qneuro study<br/>tamper-demo"] --> T4["qneuro audit"]
+  end

@@ -1,0 +1,19 @@
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#E8E7E2","primaryTextColor":"#1C1B18","primaryBorderColor":"#1C1B18","lineColor":"#57544C","secondaryColor":"#DDDBD3","tertiaryColor":"#E8E7E2","edgeLabelBackground":"#E8E7E2","clusterBkg":"#E8E7E2","clusterBorder":"#CAC7BC","noteBkgColor":"#DDDBD3","noteTextColor":"#1C1B18","actorBkg":"#E8E7E2","actorBorder":"#1C1B18","actorTextColor":"#1C1B18","signalColor":"#57544C","signalTextColor":"#1C1B18","labelBoxBkgColor":"#DDDBD3","labelBoxBorderColor":"#1C1B18","labelTextColor":"#1C1B18","loopTextColor":"#1C1B18","activationBkgColor":"#D3E0D6","activationBorderColor":"#1E6B55","sequenceNumberColor":"#E8E7E2","fontFamily":"ui-sans-serif, system-ui, Segoe UI, Helvetica, Arial, sans-serif"}}}%%
+flowchart TD
+  S1["1. Hash 18 input and output files<br/>write manifest, copy to public/data/artifacts"] --> S2["2. Re-run E5<br/>independent angle-embedding kernel"]
+  S2 --> S3["3. Re-run E6<br/>true ZZ kernel and 5 classical models<br/>compare with the stored file"]
+  S3 --> S4["4. Re-run sweeps E3 and E4"]
+  S4 --> S5["5. Leakage study and platform-gap study"]
+  S5 --> S6["6. Honesty Guard on repeated cross-validation<br/>15 paired splits, with and without time"]
+  S6 --> S7["7. Check 20 claims<br/>each gets a status and a recomputed value"]
+  S7 --> S8["8. Seal<br/>hash the study, sign with ML-DSA-65<br/>write the last audit entry"]
+  S8 --> O["public/data/study.json, audit.jsonl<br/>runs/morphos/audit.jsonl"]
+  S1 -.->|"audit entry per file"| L[("hash-chained<br/>audit log")]
+  S2 -.-> L
+  S3 -.-> L
+  S5 -.-> L
+  S6 -.-> L
+  S7 -.-> L
+  S8 -.-> L
+  classDef sec stroke:#1E6B55,stroke-width:2px;
+  class S8,O,L sec;
